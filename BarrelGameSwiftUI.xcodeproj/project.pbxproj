@@ -14,6 +14,9 @@
 		A134E8D72BB29EA60027EB09 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8D62BB29EA60027EB09 /* Board.swift */; };
 		A134E8D92BB780DD0027EB09 /* Tile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8D82BB780DD0027EB09 /* Tile.swift */; };
 		A134E8DB2BB79FB30027EB09 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8DA2BB79FB30027EB09 /* Constants.swift */; };
+		A14C5EED2BB8D368007C39F4 /* BoardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EEC2BB8D368007C39F4 /* BoardError.swift */; };
+		A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */; };
+		A14C5EF22BB916A5007C39F4 /* SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +28,9 @@
 		A134E8D62BB29EA60027EB09 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		A134E8D82BB780DD0027EB09 /* Tile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tile.swift; sourceTree = "<group>"; };
 		A134E8DA2BB79FB30027EB09 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A14C5EEC2BB8D368007C39F4 /* BoardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardError.swift; sourceTree = "<group>"; };
+		A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimeGameScene.swift; sourceTree = "<group>"; };
+		A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSpriteNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,11 +63,14 @@
 		A134E8C32BB283C20027EB09 /* BarrelGameSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				A14C5EF02BB91696007C39F4 /* Extensions */,
 				A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */,
 				A134E8C62BB283C20027EB09 /* ContentView.swift */,
 				A134E8D62BB29EA60027EB09 /* Board.swift */,
+				A14C5EEC2BB8D368007C39F4 /* BoardError.swift */,
 				A134E8D82BB780DD0027EB09 /* Tile.swift */,
 				A134E8DA2BB79FB30027EB09 /* Constants.swift */,
+				A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */,
 				A134E8C82BB283C30027EB09 /* Assets.xcassets */,
 				A134E8CA2BB283C30027EB09 /* Preview Content */,
 			);
@@ -74,6 +83,14 @@
 				A134E8CB2BB283C30027EB09 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		A14C5EF02BB91696007C39F4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,7 +163,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A14C5EF22BB916A5007C39F4 /* SKSpriteNode.swift in Sources */,
 				A134E8DB2BB79FB30027EB09 /* Constants.swift in Sources */,
+				A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */,
+				A14C5EED2BB8D368007C39F4 /* BoardError.swift in Sources */,
 				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
 				A134E8D92BB780DD0027EB09 /* Tile.swift in Sources */,

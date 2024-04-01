@@ -6,33 +6,36 @@
 //
 
 import SwiftUI
+import SpriteKit
 
 struct ContentView: View {
     var board = Board()
+    let scene = SlimeGameScene()
+
     
     init() {
+        scene.scaleMode = .fill
         board.generateGameReadyBoard()
         board.prettyPrintMatrix()
-        
-        board.moveLeft(row: 0)
+        board.moveUp(column: 1)
         board.prettyPrintMatrix()
-        board.moveRight(row: 0)
+        board.moveDown(column: 3)
         board.prettyPrintMatrix()
-
-        board.moveLeft(row: 3)
+        board.moveUp(column: 0)
         board.prettyPrintMatrix()
-        board.moveRight(row: 3)
+        board.moveDown(column: 4)
         board.prettyPrintMatrix()
     }
     
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("idk")
+        GeometryReader { geometry in
+            SpriteView(scene: scene)
+                .ignoresSafeArea()
         }
-        .padding()
+        .onAppear {
+            // Update the scene's size based on the actual screen dimensions
+            scene.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        }
     }
 }
 

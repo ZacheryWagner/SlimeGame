@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Model
 struct Tile {
     enum State: String {
         case empty

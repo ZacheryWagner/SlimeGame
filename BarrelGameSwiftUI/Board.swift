@@ -27,8 +27,7 @@ struct Board {
     }
 
     // MARK: Public
-    
-    
+
     /// Generates and assigns a randomized board to `matrix` that is ready to be played
     /// A game ready board constitutes the following:
     /// - Two thirds of  the `totalTiles` are filled
@@ -55,7 +54,7 @@ struct Board {
         for row in 0...rowCount - 1 {
             for column in 0...columnCount - 1 {
                 guard let tile = combinedArray.first else {
-                    print("[ERROR] generateGameReadyBoard failed to create the appropriate amount of tiles")
+                    print("[ERROR] \(BoardError.failedToGenerateGameBoard.localizedDescription)")
                     return
                 }
                 matrix[row][column] = tile
@@ -63,7 +62,7 @@ struct Board {
             }
         }
     }
-    
+
     public mutating func moveRight(row: Int) {
         print("[LOG] moveRight(row): \(row)")
         let nonEmptyTiles: [Tile] = matrix[row].filter { $0.state != .empty }
@@ -88,6 +87,64 @@ struct Board {
         matrix[row] += Array(repeating: Tile(state: .empty), count: emptyTilesCount)
     }
     
+    public mutating func moveUp(column: Int) {
+        print("[LOG] moveUp(column): \(column)")
+        var nonEmptyTiles: [Tile] = []
+        var emptyTilesCount = 0
+        
+        // Collect non-empty tiles and count empty tiles in the column
+        for row in matrix.indices {
+            if matrix[row][column].state != .empty {
+                nonEmptyTiles.append(matrix[row][column])
+            } else {
+                emptyTilesCount += 1
+            }
+        }
+        
+        // Reconstruct the column with non-empty tiles at the top
+        for row in 0..<nonEmptyTiles.count {
+            matrix[row][column] = nonEmptyTiles[row]
+        }
+        for row in nonEmptyTiles.count..<matrix.count {
+            matrix[row][column] = Tile(state: .empty)
+        }
+    }
+    
+    public mutating func moveDown(column: Int) {
+        print("[LOG] moveDown(column): \(column)")
+        var nonEmptyTiles: [Tile] = []
+        var emptyTilesCount = 0
+        
+        // Collect non-empty tiles and count empty tiles in the column
+        for row in matrix.indices {
+            if matrix[row][column].state != .empty {
+                nonEmptyTiles.append(matrix[row][column])
+            } else {
+                emptyTilesCount += 1
+            }
+        }
+        
+        // Reconstruct the column with non-empty tiles at the bottom
+        for row in 0..<emptyTilesCount {
+            matrix[row][column] = Tile(state: .empty)
+        }
+        for row in emptyTilesCount..<matrix.count {
+            matrix[row][column] = nonEmptyTiles[row - emptyTilesCount]
+        }
+    }
+
+    // MARK: Private
+    
+    private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
+        print("[LOG] createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
+        let matrix = Array(
+            repeating: Array(repeating: Tile(state: startingState), count: columns),
+            count: rows)
+        return matrix
+    }
+}
+
+extension Board {
     public func prettyPrintMatrix() {
         var maxLength = 0
         for row in matrix {
@@ -117,14 +174,5 @@ struct Board {
             // Print the complete row string
             print(rowString)
         }
-    }
-    
-    // MARK: Private
-    
-    private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
-        let matrix = Array(
-            repeating: Array(repeating: Tile(state: startingState), count: columns),
-            count: rows)
-        return matrix
     }
 }
