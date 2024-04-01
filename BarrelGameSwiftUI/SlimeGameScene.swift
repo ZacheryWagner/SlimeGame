@@ -9,20 +9,18 @@ import Foundation
 import SpriteKit
 
 class SlimeGameScene: SKScene {
-    private var animatedBackground: SKSpriteNode!
-    
-    private let bgTextureNames: [String] = ["bg_grass"]
-    private var bgTextures = [SKTexture]()
-    
-    private var gamebox = SKSpriteNode(imageNamed: "gamebox_stone")
-    private var slime = SKSpriteNode(imageNamed: "slime_green")
-    private var slime2 = SKSpriteNode(imageNamed: "slime_red")
+    private var bgGrass = SKSpriteNode(imageNamed: "ruins_bg_grass")
+    private var bgWater = SKSpriteNode(imageNamed: "ruins_bg_water")
+    private var fgGrass = SKSpriteNode(imageNamed: "ruins_fg_grass")
+    private var fgLeaves = SKSpriteNode(imageNamed: "ruins_fg_leaves")
+    private var gamebox = SKSpriteNode(imageNamed: "ruins_gb_stone")
+    private var slime = SKSpriteNode(imageNamed: "test_slime_blue")
+    private var slime2 = SKSpriteNode(imageNamed: "test_slime_red")
     
     // MARK: Lifecycle
     
     override init() {
         super.init()
-        loadTextures()
     }
     
     override init(size: CGSize) {
@@ -36,6 +34,7 @@ class SlimeGameScene: SKScene {
 
     override func didMove(to view: SKView) {
         setupBackground()
+        setupForeground()
         setupGamebox()
         setupSlimes()
     }
@@ -43,10 +42,42 @@ class SlimeGameScene: SKScene {
     // MARK: - Private
     
     private func setupBackground() {
-        animatedBackground = SKSpriteNode(texture: bgTextures.first)
-        animatedBackground.position = CGPoint(x: frame.midX, y: frame.midY)
-        animatedBackground.zPosition = LayerPositions.background.rawValue
-        addChild(animatedBackground)
+        bgGrass.position = CGPoint(x: frame.midX, y: frame.midY)
+        bgGrass.zPosition = LayerPositions.bgGrass.rawValue
+        
+        bgWater.position = CGPoint(x: frame.midX, y: frame.midY)
+        bgWater.zPosition = LayerPositions.bgWater.rawValue
+        
+        addChild(bgGrass)
+        addChild(bgWater)
+    }
+    
+    private func setupForeground() {
+        fgGrass.position = CGPoint(x: frame.midX, y: frame.midY)
+        fgGrass.zPosition = LayerPositions.fgGrass.rawValue
+        
+        fgLeaves.position = CGPoint(x: frame.midX, y: frame.midY)
+        fgLeaves.zPosition = LayerPositions.fgLeaves.rawValue
+        
+        addChild(fgGrass)
+        addChild(fgLeaves)
+        
+        fgLeaves.run(wiggleAction())
+    }
+    
+    private func wiggleAction() -> SKAction {
+        let moveRight = SKAction.moveBy(x: 5, y: 0, duration: 2)
+        let moveLeft = SKAction.moveBy(x: -5, y: 0, duration: 2)
+        let moveSequence = SKAction.sequence([moveRight, moveLeft])
+
+        let rotateRight = SKAction.rotate(byAngle: 0.02, duration: 2)
+        let rotateLeft = SKAction.rotate(byAngle: -0.02, duration: 2)
+        let rotateSequence = SKAction.sequence([rotateRight, rotateLeft])
+
+        let group = SKAction.group([moveSequence, rotateSequence])
+        let repeatForever = SKAction.repeatForever(group)
+
+        return repeatForever
     }
     
     private func setupGamebox() {
@@ -64,23 +95,15 @@ class SlimeGameScene: SKScene {
         addChild(slime)
         addChild(slime2)
     }
-    
-    private func loadTextures() {
-        bgTextures = bgTextureNames.map { SKTexture(imageNamed: $0) }
-    }
-
-    private func animateBackground() {
-        let animation = SKAction.animate(with: bgTextures, timePerFrame: 0.5)
-        let loop = SKAction.repeatForever(animation)
-        
-        animatedBackground.run(loop)
-    }
 }
 
 extension SlimeGameScene {
     enum LayerPositions: CGFloat {
-        case background = -1
+        case bgGrass = -10
+        case bgWater = -9
         case gamebox = 0
         case slime = 1
+        case fgGrass = 10
+        case fgLeaves = 11
     }
 }
