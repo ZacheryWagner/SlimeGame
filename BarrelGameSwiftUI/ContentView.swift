@@ -15,16 +15,6 @@ struct ContentView: View {
     
     init() {
         scene.scaleMode = .fill
-        board.generateGameReadyBoard()
-        board.prettyPrintMatrix()
-        board.moveUp(column: 1)
-        board.prettyPrintMatrix()
-        board.moveDown(column: 3)
-        board.prettyPrintMatrix()
-        board.moveUp(column: 0)
-        board.prettyPrintMatrix()
-        board.moveDown(column: 4)
-        board.prettyPrintMatrix()
     }
     
     var body: some View {

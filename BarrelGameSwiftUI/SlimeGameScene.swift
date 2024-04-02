@@ -9,14 +9,14 @@ import Foundation
 import SpriteKit
 
 class SlimeGameScene: SKScene {
+
     private var bgGrass = SKSpriteNode(imageNamed: "ruins_bg_grass")
     private var bgWater = SKSpriteNode(imageNamed: "ruins_bg_water")
     private var fgGrass = SKSpriteNode(imageNamed: "ruins_fg_grass")
     private var fgLeaves = SKSpriteNode(imageNamed: "ruins_fg_leaves")
-    private var gamebox = SKSpriteNode(imageNamed: "ruins_gb_stone")
-    private var slime = SKSpriteNode(imageNamed: "test_slime_blue")
-    private var slime2 = SKSpriteNode(imageNamed: "test_slime_red")
-    
+    private var gbStone = SKSpriteNode(imageNamed: "ruins_gb_stone")
+    private var gbPlayableArea = SKSpriteNode(imageNamed: "ruins_gb_playable_area")
+
     // MARK: Lifecycle
     
     override init() {
@@ -30,16 +30,18 @@ class SlimeGameScene: SKScene {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 
     override func didMove(to view: SKView) {
+        setupWorld()
+    }
+    
+    // MARK: - Setup
+    
+    private func setupWorld() {
         setupBackground()
         setupForeground()
         setupGamebox()
-        setupSlimes()
     }
-    
-    // MARK: - Private
     
     private func setupBackground() {
         bgGrass.position = CGPoint(x: frame.midX, y: frame.midY)
@@ -65,6 +67,19 @@ class SlimeGameScene: SKScene {
         fgLeaves.run(wiggleAction())
     }
     
+    private func setupGamebox() {
+        gbStone.position = CGPoint(x: frame.midX, y: frame.midY)
+        gbStone.zPosition = LayerPositions.gamebox.rawValue
+        
+        gbPlayableArea.position = CGPoint(x: frame.midX, y: frame.midY)
+        gbPlayableArea.zPosition = LayerPositions.gamebox.rawValue
+        
+        addChild(gbStone)
+        addChild(gbPlayableArea)
+    }
+    
+    // MARK: Actions
+
     private func wiggleAction() -> SKAction {
         let moveRight = SKAction.moveBy(x: 5, y: 0, duration: 2)
         let moveLeft = SKAction.moveBy(x: -5, y: 0, duration: 2)
@@ -78,22 +93,6 @@ class SlimeGameScene: SKScene {
         let repeatForever = SKAction.repeatForever(group)
 
         return repeatForever
-    }
-    
-    private func setupGamebox() {
-        gamebox.position = CGPoint(x: frame.midX, y: frame.midY)
-        gamebox.zPosition = LayerPositions.gamebox.rawValue
-        addChild(gamebox)
-    }
-    
-    private func setupSlimes() {
-        slime.position = CGPoint(x: frame.midX - 32, y: frame.midY)
-        slime.zPosition = LayerPositions.slime.rawValue
-        
-        slime2.position = CGPoint(x: frame.midX + 32, y: frame.midY)
-        slime2.zPosition = LayerPositions.slime.rawValue
-        addChild(slime)
-        addChild(slime2)
     }
 }
 
