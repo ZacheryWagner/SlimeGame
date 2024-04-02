@@ -10,23 +10,30 @@ import Foundation
 struct Board {
     private var matrix = [[Tile]]()
     
-    private var rowCount: Int = 6
-    private var columnCount: Int = 6
+    private var rowCount: Int
+    private var columnCount: Int
     private var totalTiles: Int {
         return rowCount * columnCount
     }
     
     // MARK: Initialization
     
-    init() {}
-    
     init(rows: Int, columns: Int, startingState: Tile.State) {
-        self.matrix = createMatrix(rows: rows, columns: columns, startingState: startingState)
         self.rowCount = rows
         self.columnCount = columns
+        self.matrix = createMatrix(rows: rows, columns: columns, startingState: startingState)
     }
 
     // MARK: Public
+    
+    public func getTile(row: Int, column: Int) -> Tile? {
+        guard row < rowCount - 1,
+              column < columnCount - 1 else {
+            Logger.error(BoardError.failedToGetTile(row, column))
+            return nil
+        }
+        return matrix[row][column]
+    }
 
     /// Generates and assigns a randomized board to `matrix` that is ready to be played
     /// A game ready board constitutes the following:
@@ -35,11 +42,7 @@ struct Board {
     /// - Half of the filled tiles are blue
     /// - The arrangement of the filled tiles is random
     public mutating func generateGameReadyBoard() {
-        print("[LOG] generateGameReadyBoard")
-        
-        // Initialize an empty matrix
-        self.matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
-
+        Logger.info("generateGameReadyBoard")
         // Create our starting arrays of each type
         let startingAmount: Int = totalTiles / 3
         let redArray = Array(repeating: Tile(state: .red), count: startingAmount)
@@ -64,7 +67,7 @@ struct Board {
     }
 
     public mutating func moveRight(row: Int) {
-        print("[LOG] moveRight(row): \(row)")
+        Logger.info("moveRight(row): \(row)")
         let nonEmptyTiles: [Tile] = matrix[row].filter { $0.state != .empty }
         let emptyTilesCount = matrix[row].count - nonEmptyTiles.count
         
@@ -76,7 +79,7 @@ struct Board {
     }
     
     public mutating func moveLeft(row: Int) {
-        print("[LOG] moveLeft(row): \(row)")
+        Logger.info("moveLeft(row): \(row)")
         let nonEmptyTiles: [Tile] = matrix[row].filter { $0.state != .empty }
         let emptyTilesCount = matrix[row].count - nonEmptyTiles.count
         
@@ -88,7 +91,7 @@ struct Board {
     }
     
     public mutating func moveUp(column: Int) {
-        print("[LOG] moveUp(column): \(column)")
+        Logger.info("moveUp(column): \(column)")
         var nonEmptyTiles: [Tile] = []
         var emptyTilesCount = 0
         
@@ -111,7 +114,7 @@ struct Board {
     }
     
     public mutating func moveDown(column: Int) {
-        print("[LOG] moveDown(column): \(column)")
+        Logger.info("moveDown(column): \(column)")
         var nonEmptyTiles: [Tile] = []
         var emptyTilesCount = 0
         
@@ -136,7 +139,7 @@ struct Board {
     // MARK: Private
     
     private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
-        print("[LOG] createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
+        Logger.info("createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
         let matrix = Array(
             repeating: Array(repeating: Tile(state: startingState), count: columns),
             count: rows)
