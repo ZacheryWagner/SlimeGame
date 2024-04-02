@@ -1,0 +1,24 @@
+//
+//  BoardError.swift
+//  BarrelGameSwiftUI
+//
+//  Created by Zachery Wagner on 3/30/24.
+//
+
+import Foundation
+
+enum BoardError: Error {
+    case failedToGenerateGameBoard
+    case failedToGetTile(Int, Int)
+}
+
+extension BoardError: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .failedToGenerateGameBoard:
+            return "failedToGenerateGameBoard with appropriate amount of tiles"
+        case .failedToGetTile(let row, let column):
+            return "failedToGetTile at row: \(row) and column \(column)"
+        }
+    }
+}
