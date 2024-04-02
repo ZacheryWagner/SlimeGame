@@ -1,2 +1,2 @@
 # SlimeGame
- Retro puzzle game avbout moving slimes
+ Retro puzzle game about moving slimes
