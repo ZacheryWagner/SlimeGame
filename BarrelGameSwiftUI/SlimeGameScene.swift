@@ -8,14 +8,19 @@
 import Foundation
 import SpriteKit
 
-class SlimeGameScene: SKScene {
+protocol SlimeGameSceneDelegate: AnyObject {
+    func didSetupPlayableArea(with frame: CGRect)
+}
 
+class SlimeGameScene: SKScene {
     private var bgGrass = SKSpriteNode(imageNamed: "ruins_bg_grass")
     private var bgWater = SKSpriteNode(imageNamed: "ruins_bg_water")
     private var fgGrass = SKSpriteNode(imageNamed: "ruins_fg_grass")
     private var fgLeaves = SKSpriteNode(imageNamed: "ruins_fg_leaves")
     private var gbStone = SKSpriteNode(imageNamed: "ruins_gb_stone")
     private var gbPlayableArea = SKSpriteNode(imageNamed: "ruins_gb_playable_area")
+    
+    weak var setupDelegate: SlimeGameSceneDelegate?
 
     // MARK: Lifecycle
     
@@ -32,16 +37,28 @@ class SlimeGameScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
-        setupWorld()
+
     }
     
-    // MARK: - Setup
-    
-    private func setupWorld() {
+    public func setupWorld() {
         setupBackground()
         setupForeground()
         setupGamebox()
+        
+        setupDelegate?.didSetupPlayableArea(with: gbPlayableArea.frame)
     }
+    
+    public func inject(slimes: [[Slime?]]) {
+        for row in slimes.indices {
+            for column in slimes.indices {
+                if let slime = slimes[row][column] {
+                    addChild(slime)
+                }
+            }
+        }
+    }
+    
+    // MARK: - Setup
     
     private func setupBackground() {
         bgGrass.position = CGPoint(x: frame.midX, y: frame.midY)

@@ -51,27 +51,9 @@ class Slime: SKSpriteNode, DirectionalMovement {
     // MARK: DirectionalMovement
 
     func move(in direction: Direction) {
+        // Change texture
         texture = directionalTextures[direction]
         
-        let moveDistance: CGFloat = 10
-        var moveAction: SKAction?
-        
-        switch direction {
-        case .up:
-            moveAction = SKAction.moveBy(x: 0, y: moveDistance, duration: 0.2)
-        case .down:
-            moveAction = SKAction.moveBy(x: 0, y: -moveDistance, duration: 0.2)
-        case .left:
-            moveAction = SKAction.moveBy(x: -moveDistance, y: 0, duration: 0.2)
-        case .right:
-            moveAction = SKAction.moveBy(x: moveDistance, y: 0, duration: 0.2)
-        }
-        
-        if let action = moveAction {
-            run(action) { [weak self] in
-                guard let self = self else { return }
-                self.texture = self.idleTexture
-            }
-        }
+        // Handle Movement
     }
 }

@@ -9,9 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    var board = Board()
     let scene = SlimeGameScene()
-
     
     init() {
         scene.scaleMode = .fill
