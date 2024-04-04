@@ -7,47 +7,99 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
 import Combine
 
-class GameManager: SlimeGameSceneDelegate, BoardVisualizerDelegate {
-    private var state: GameState = .unititialized
+class GameManager {
+    private let logger = Logger(source: GameManager.self)
+    
+    private var state = CurrentValueSubject<GameState, Never>(.uninitialized)
+    private var cancellables = Set<AnyCancellable>()
+    
+    private var scene: SlimeGameScene
     private let board: Board
-    private let scene: SlimeGameScene
     private var boardVisualizer: BoardVisualizing
+    
+    // MARK: Initialization
     
     init(board: Board, scene: SlimeGameScene, boardVisualizer: BoardVisualizing) {
         self.board = board
         self.scene = scene
         self.boardVisualizer = boardVisualizer
-        setupListeners()
+    
+        setupEvents()
+        setupStateSubscriptions()
         initializeGame()
     }
     
-    private func setupListeners() {
-        scene.setupDelegate = self
-        boardVisualizer.updateDelegate = self
-    }
-    
     private func initializeGame() {
-        Logger.info("initializeGame")
+        logger.info("initializeGame")
         board.generateGameReadyBoard()
-        scene.setupWorld()
+        board.prettyPrintMatrix()
+    }
+
+    private func setupEvents() {
+        scene.events
+            .merge(with: boardVisualizer.events)
+            .sink { [weak self] event in
+                self?.handleEvent(event)
+            }
+            .store(in: &cancellables)
+        
+        scene.scaleMode = .aspectFill
     }
     
-    // MARK: SlimeGameSceneDelegate
+    // MARK: State Machine
     
-    func didSetupPlayableArea(with frame: CGRect) {
-        boardVisualizer.update(for: board, in: frame)
+    private func setupStateSubscriptions() {
+        state
+            .removeDuplicates()
+            .sink { [weak self] newState in
+                self?.logger.info("State Update: \(newState)")
+                switch newState {
+                case .uninitialized: return
+                case .loading: return
+                case .ready: return
+                case .playing: return
+                case .paused: return
+                case .ended: return
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleEvent(_ event: GameEvent) {
+        switch event {
+        case .playableAreaSetupComplete(let frame, let center):
+            logger.info("handleEvent: playableAreaSetupComplete")
+            board.generateGameReadyBoard()
+            boardVisualizer.update(for: board, in: frame, center: center)
+        case .boardVisualizationComplete(let slimes):
+            logger.info("handleEvent: boardVisualizationComplete")
+            scene.inject(slimes: slimes)
+        case .slimesUpdated(_):
+            logger.info("handleEvent: slimesUpdated")
+        }
     }
     
-    // MARK: BoardVisualizerDelegate
-    
-    func didUpdateSlimes(_ slimes: [[Slime?]]) {
-        state = .ready
-        scene.inject(slimes: slimes)
+    private func transition(to newState: GameState) {
+        guard state.value != newState else { return }
+        state.send(newState)
     }
     
-    func start() {
-        guard state == .ready else { return }
+    // MARK: Game
+    
+    private func start() {
+        guard state.value == .ready else { return }
+    }
+    
+    // MARK: Public
+    
+    func getSpriteView() -> some View {
+        return SpriteView(scene: scene).ignoresSafeArea()
+    }
+    
+    func configureSceneSize(size: CGSize) {
+        scene.size = size
     }
 }

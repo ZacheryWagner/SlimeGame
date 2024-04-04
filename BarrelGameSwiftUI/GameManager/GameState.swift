@@ -8,8 +8,16 @@
 import Foundation
 
 enum GameState {
-    case unititialized
+    case uninitialized
+    case loading
     case ready
-    case running
-    case gameOver
+    case playing
+    case paused
+    case ended
+}
+
+enum GameEvent {
+    case playableAreaSetupComplete(CGRect, CGPoint)
+    case boardVisualizationComplete([[Slime?]])
+    case slimesUpdated([[Slime?]])
 }

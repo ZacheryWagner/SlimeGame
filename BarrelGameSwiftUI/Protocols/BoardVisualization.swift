@@ -6,9 +6,10 @@
 //
 
 import Foundation
+import Combine
 
 protocol BoardVisualizing {
-    var updateDelegate: BoardVisualizerDelegate? { get set }
-    
-    func update(for board: Board, in rect: CGRect)
+    var events: PassthroughSubject<GameEvent, Never> { get set }
+
+    func update(for board: Board, in rect: CGRect, center: CGPoint)
 }
