@@ -7,20 +7,26 @@
 
 import Foundation
 import SpriteKit
-
-protocol SlimeGameSceneDelegate: AnyObject {
-    func didSetupPlayableArea(with frame: CGRect)
-}
+import Combine
 
 class SlimeGameScene: SKScene {
+    private let logger = Logger(source: SlimeGameScene.self)
+    
+    /// Informs the `GameManager` of  `GameEvent`s
+    public var events = PassthroughSubject<GameEvent, Never>()
+    
     private var bgGrass = SKSpriteNode(imageNamed: "ruins_bg_grass")
     private var bgWater = SKSpriteNode(imageNamed: "ruins_bg_water")
     private var fgGrass = SKSpriteNode(imageNamed: "ruins_fg_grass")
     private var fgLeaves = SKSpriteNode(imageNamed: "ruins_fg_leaves")
     private var gbStone = SKSpriteNode(imageNamed: "ruins_gb_stone")
-    private var gbPlayableArea = SKSpriteNode(imageNamed: "ruins_gb_playable_area")
     
-    weak var setupDelegate: SlimeGameSceneDelegate?
+    internal lazy var gbPlayableArea: SKSpriteNode = {
+        var texture = SKTexture(imageNamed: "ruins_gb_playable_area")
+        return SKSpriteNode(texture: texture, size: texture.size())
+    }()
+    
+    internal var slimeMatrix = [[Slime?]]()
 
     // MARK: Lifecycle
     
@@ -37,7 +43,7 @@ class SlimeGameScene: SKScene {
     }
 
     override func didMove(to view: SKView) {
-
+        setupWorld()
     }
     
     public func setupWorld() {
@@ -45,13 +51,17 @@ class SlimeGameScene: SKScene {
         setupForeground()
         setupGamebox()
         
-        setupDelegate?.didSetupPlayableArea(with: gbPlayableArea.frame)
+        setupDebugUI()
+        
+        events.send(.playableAreaSetupComplete(gbPlayableArea.frame, CGPoint(x: frame.midX, y: frame.midY + 20)))
     }
     
     public func inject(slimes: [[Slime?]]) {
+        logger.info("inject")
+        slimeMatrix = slimes
         for row in slimes.indices {
             for column in slimes.indices {
-                if let slime = slimes[row][column] {
+                if let slime = slimeMatrix[row][column] {
                     addChild(slime)
                 }
             }
@@ -61,10 +71,10 @@ class SlimeGameScene: SKScene {
     // MARK: - Setup
     
     private func setupBackground() {
-        bgGrass.position = CGPoint(x: frame.midX, y: frame.midY)
+        bgGrass.position = frame.center
         bgGrass.zPosition = LayerPositions.bgGrass.rawValue
         
-        bgWater.position = CGPoint(x: frame.midX, y: frame.midY)
+        bgWater.position = frame.center
         bgWater.zPosition = LayerPositions.bgWater.rawValue
         
         addChild(bgGrass)
@@ -72,10 +82,10 @@ class SlimeGameScene: SKScene {
     }
     
     private func setupForeground() {
-        fgGrass.position = CGPoint(x: frame.midX, y: frame.midY)
+        fgGrass.position = frame.center
         fgGrass.zPosition = LayerPositions.fgGrass.rawValue
         
-        fgLeaves.position = CGPoint(x: frame.midX, y: frame.midY)
+        fgLeaves.position = frame.center
         fgLeaves.zPosition = LayerPositions.fgLeaves.rawValue
         
         addChild(fgGrass)
@@ -85,10 +95,10 @@ class SlimeGameScene: SKScene {
     }
     
     private func setupGamebox() {
-        gbStone.position = CGPoint(x: frame.midX, y: frame.midY)
+        gbStone.position = frame.center
         gbStone.zPosition = LayerPositions.gamebox.rawValue
         
-        gbPlayableArea.position = CGPoint(x: frame.midX, y: frame.midY)
+        gbPlayableArea.position = frame.center
         gbPlayableArea.zPosition = LayerPositions.gamebox.rawValue
         
         addChild(gbStone)
@@ -110,16 +120,5 @@ class SlimeGameScene: SKScene {
         let repeatForever = SKAction.repeatForever(group)
 
         return repeatForever
-    }
-}
-
-extension SlimeGameScene {
-    enum LayerPositions: CGFloat {
-        case bgGrass = -10
-        case bgWater = -9
-        case gamebox = 0
-        case slime = 1
-        case fgGrass = 10
-        case fgLeaves = 11
     }
 }
