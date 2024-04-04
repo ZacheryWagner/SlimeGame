@@ -8,8 +8,10 @@
 import Foundation
 
 class Board {
+    private let logger = Logger(source: Board.self)
+
     private var matrix = [[Tile]]()
-    
+
     private var rowCount: Int
     private var columnCount: Int
     private var totalTiles: Int {
@@ -34,7 +36,7 @@ class Board {
     public func getTileState(row: Int, column: Int) -> Tile.State? {
         guard row < rowCount,
               column < columnCount else {
-            Logger.error(BoardError.failedToGetTile(row, column))
+            logger.error(BoardError.failedToGetTile(row, column))
             return nil
         }
         return matrix[row][column].state
@@ -47,7 +49,7 @@ class Board {
     /// - Half of the filled tiles are blue
     /// - The arrangement of the filled tiles is random
     public func generateGameReadyBoard() {
-        Logger.info("generateGameReadyBoard")
+        logger.info("generateGameReadyBoard")
 
         // Reset the matrix
         matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
@@ -69,7 +71,7 @@ class Board {
     /// Creates and returns a randomized array of tile states based on `rowCount` and `columnCount`
     /// - Returns: A shuffled array of `Tile.State`
     private func getRandomizedTileStates() -> [Tile.State] {
-        Logger.info("getRandomizedTileStates")
+        logger.info("getRandomizedTileStates")
         
         // Get the counts for each array.  This negates truncation issues.
         let filledCount = totalTiles * 2 / 3
@@ -78,7 +80,6 @@ class Board {
         let emptyCount = totalTiles - filledCount
 
         // Create starting arrays of each state
-        let startingAmount: Int = totalTiles / 3
         let redArray = Array(repeating: Tile.State.red, count: redCount)
         let blueArray = Array(repeating: Tile.State.blue, count: blueCount)
         let emptyArray = Array(repeating: Tile.State.empty, count: emptyCount)
@@ -89,7 +90,7 @@ class Board {
     }
 
     public func moveRight(row: Int) {
-        Logger.info("moveRight(row): \(row)")
+        logger.info("moveRight(row): \(row)")
         guard row < rowCount else { return }
         
         // Get the row's states
@@ -111,7 +112,7 @@ class Board {
     }
     
     public func moveLeft(row: Int) {
-        Logger.info("moveLeft(row): \(row)")
+        logger.info("moveLeft(row): \(row)")
         guard row < rowCount else { return }
 
         var statesInRow = matrix[row].map { $0.state}
@@ -127,7 +128,7 @@ class Board {
     }
     
     public func moveUp(column: Int) {
-        Logger.info("moveUp(column): \(column)")
+        logger.info("moveUp(column): \(column)")
         guard column < columnCount else { return }
 
         var statesInColumn = matrix.map { $0[column].state }
@@ -144,7 +145,7 @@ class Board {
     }
     
     public func moveDown(column: Int) {
-        Logger.info("moveDown(column): \(column)")
+        logger.info("moveDown(column): \(column)")
         guard column < columnCount else { return }
 
         var statesInColumn = matrix.map { $0[column].state }
@@ -163,7 +164,7 @@ class Board {
     // MARK: Private
     
     private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
-        Logger.info("createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
+        logger.info("createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
         let matrix = Array(
             repeating: Array(repeating: Tile(state: startingState, position: (row: 0, column: 0)), count: columns),
             count: rows)
