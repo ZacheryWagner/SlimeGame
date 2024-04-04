@@ -9,20 +9,17 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    let scene = SlimeGameScene()
+    let gameManager = GameManagerFactory.make()
     
-    init() {
-        scene.scaleMode = .fill
-    }
+    init() {}
     
     var body: some View {
         GeometryReader { geometry in
-            SpriteView(scene: scene)
-                .ignoresSafeArea()
+            gameManager.getSpriteView()
         }
         .onAppear {
-            // Update the scene's size based on the actual screen dimensions
-            scene.size = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            let screenSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+            gameManager.configureSceneSize(size: screenSize)
         }
     }
 }
