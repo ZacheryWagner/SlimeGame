@@ -182,24 +182,24 @@ class SlimeGameScene: SKScene {
         guard let start = touchStartPoint, let touch = touches.first,
               let startRow = touchStartRow, let startColumn = touchStartColumn else { return }
         let endLocation = touch.location(in: self)
-        
+
         // Determine the swipe direction
         let deltaX = endLocation.x - start.x
         let deltaY = endLocation.y - start.y
 
         if abs(deltaX) > abs(deltaY) {
-            // Left/Right Swipe
+            // Horizontal Swipe
             if deltaX > 0 {
                 events.send(.swipe(.right, startRow))
             } else {
                 events.send(.swipe(.left, startRow))
             }
         } else {
-            // Up/Down Swipe
+            // Vertical Swipe
             if deltaY > 0 {
-                events.send(.swipe(.up, startColumn))
+                events.send(.swipe(.up, startColumn)) // deltaY > 0 indicates a swipe downwards on the screen
             } else {
-                events.send(.swipe(.down, startColumn))
+                events.send(.swipe(.down, startColumn)) // deltaY < 0 indicates a swipe upwards
             }
         }
 
