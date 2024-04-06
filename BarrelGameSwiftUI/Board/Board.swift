@@ -67,6 +67,21 @@ class Board {
         }
     }
 
+    public func move(direction: Direction, index: Int) {
+        logger.info("move: \(direction), \(index))")
+        switch direction {
+        case .up:
+            moveUp(column: index)
+        case .down:
+            moveDown(column: index)
+        case .left:
+            moveLeft(row: index)
+        case .right:
+            moveRight(row: index)
+        }
+    }
+    
+    // MARK: - Private
 
     /// Creates and returns a randomized array of tile states based on `rowCount` and `columnCount`
     /// - Returns: A shuffled array of `Tile.State`
@@ -89,7 +104,7 @@ class Board {
         return combinedArray.shuffled()
     }
 
-    public func moveRight(row: Int) {
+    private func moveRight(row: Int) {
         logger.info("moveRight(row): \(row)")
         guard row < rowCount else { return }
         
@@ -111,7 +126,7 @@ class Board {
         }
     }
     
-    public func moveLeft(row: Int) {
+    private func moveLeft(row: Int) {
         logger.info("moveLeft(row): \(row)")
         guard row < rowCount else { return }
 
@@ -127,7 +142,7 @@ class Board {
         }
     }
     
-    public func moveUp(column: Int) {
+    private func moveUp(column: Int) {
         logger.info("moveUp(column): \(column)")
         guard column < columnCount else { return }
 
@@ -144,7 +159,7 @@ class Board {
         }
     }
     
-    public func moveDown(column: Int) {
+    private func moveDown(column: Int) {
         logger.info("moveDown(column): \(column)")
         guard column < columnCount else { return }
 
@@ -161,7 +176,7 @@ class Board {
         }
     }
 
-    // MARK: Private
+    // MARK: Helpers
     
     private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
         logger.info("createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")

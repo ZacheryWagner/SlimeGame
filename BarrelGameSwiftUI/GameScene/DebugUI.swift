@@ -48,9 +48,11 @@ extension SlimeGameScene {
             
             self.removeChildren(in: slimeMatrix.flatMap({ $0 }).compactMap({ $0 }))
 
-            events.send(.playableAreaSetupComplete(
-                gbPlayableArea.frame,
-                CGPoint(x: frame.midX, y: frame.midY + 20))
+            events.send(
+                .playableAreaSetupComplete(
+                    playableArea.frame,
+                    CGPoint(x: frame.midX, y: frame.midY + 20)
+                )
             )
         }
         button.position = CGPoint(x: frame.midX, y: 60)
@@ -60,7 +62,6 @@ extension SlimeGameScene {
     
     public func setupDebugUI() {
         addChild(debugCenterMarker)
-        addChild(debugSlime)
         addChild(debugLabel)
         addChild(generateBoardButton)
         drawPlayableArea()
@@ -68,14 +69,13 @@ extension SlimeGameScene {
     
     private func drawPlayableArea() {
         // Assuming gbPlayableArea's anchorPoint is (0.5, 0.5)
-        let gbFrame = gbPlayableArea.frame
         let path = CGMutablePath()
-        path.addRect(gbFrame)
+        path.addRect(playableArea.frame)
         
         // Use the path to create a shape node
         let playableAreaOutline = SKShapeNode(path: path)
         playableAreaOutline.strokeColor = SKColor.green
-        playableAreaOutline.lineWidth = 6
+        playableAreaOutline.lineWidth = 2
         playableAreaOutline.fillColor = SKColor.clear
         
         // Since we're adding this directly to the scene, we don't need to convert points

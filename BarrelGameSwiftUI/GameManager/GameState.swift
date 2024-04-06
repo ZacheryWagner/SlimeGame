@@ -17,7 +17,12 @@ enum GameState {
 }
 
 enum GameEvent {
+    /// The scene has finished loading textures and setting up the world
     case playableAreaSetupComplete(CGRect, CGPoint)
+    
+    /// The board has generated the slimes an assigned their positions
     case boardVisualizationComplete([[Slime?]])
-    case slimesUpdated([[Slime?]])
+    
+    /// There has been a completed swipe action on a given row or column
+    case swipe(Direction, Int)
 }

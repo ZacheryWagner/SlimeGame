@@ -23,4 +23,8 @@ class Constants {
     
     /// Pixels between slimes
     static let slimePadding: CGFloat = pixelWidth * 3
+    
+    /// These need to go away once I get corrected assets
+    static let playableAreaSize = CGSize(width: 310, height: 404)
+    static let playableAreaVerticalOffset: CGFloat = 20
 }

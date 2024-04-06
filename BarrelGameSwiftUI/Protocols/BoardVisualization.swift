@@ -11,5 +11,7 @@ import Combine
 protocol BoardVisualizing {
     var events: PassthroughSubject<GameEvent, Never> { get set }
 
-    func update(for board: Board, in rect: CGRect, center: CGPoint)
+    func update(for board: Board, center: CGPoint)
+
+    func animateSlimesForSwipe(direction: Direction, index: Int)
 }

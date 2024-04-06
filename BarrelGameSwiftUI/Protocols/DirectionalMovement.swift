@@ -16,4 +16,8 @@ enum Direction: String, CaseIterable {
     case down
     case left
     case right
+    
+    var isHorizontal: Bool {
+        return self == .left || self == .right
+    }
 }

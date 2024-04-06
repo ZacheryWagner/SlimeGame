@@ -20,12 +20,9 @@ class SlimeGameScene: SKScene {
     private var fgGrass = SKSpriteNode(imageNamed: "ruins_fg_grass")
     private var fgLeaves = SKSpriteNode(imageNamed: "ruins_fg_leaves")
     private var gbStone = SKSpriteNode(imageNamed: "ruins_gb_stone")
+    private var gbPlayableArea = SKSpriteNode(imageNamed: "ruins_gb_playable_area")
     
-    internal lazy var gbPlayableArea: SKSpriteNode = {
-        var texture = SKTexture(imageNamed: "ruins_gb_playable_area")
-        return SKSpriteNode(texture: texture, size: texture.size())
-    }()
-    
+    internal var playableArea = SKSpriteNode(color: .clear, size: Constants.playableAreaSize)
     internal var slimeMatrix = [[Slime?]]()
 
     // MARK: Lifecycle
@@ -46,29 +43,39 @@ class SlimeGameScene: SKScene {
         setupWorld()
     }
     
-    public func setupWorld() {
+    // MARK: Public
+
+    public func inject(slimes: [[Slime?]]) {
+        logger.info("inject slimes")
+        slimeMatrix = slimes
+        var delayIncrement = 0.0
+        
+        for row in slimes.indices {
+            for column in slimes[row].indices {
+                if let slime = slimeMatrix[row][column] {
+                    // Start the slime at a small scale
+                    slime.setScale(0)
+                    addChild(slime)
+                    animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
+                }
+            }
+        }
+    }
+    
+    // MARK: Setup
+    
+    private func setupWorld() {
         setupBackground()
         setupForeground()
         setupGamebox()
         
         setupDebugUI()
         
-        events.send(.playableAreaSetupComplete(gbPlayableArea.frame, CGPoint(x: frame.midX, y: frame.midY + 20)))
+        events.send(.playableAreaSetupComplete(
+            playableArea.frame,
+            CGPoint(x: frame.midX, y: frame.midY + Constants.playableAreaVerticalOffset))
+        )
     }
-    
-    public func inject(slimes: [[Slime?]]) {
-        logger.info("inject")
-        slimeMatrix = slimes
-        for row in slimes.indices {
-            for column in slimes.indices {
-                if let slime = slimeMatrix[row][column] {
-                    addChild(slime)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Setup
     
     private func setupBackground() {
         bgGrass.position = frame.center
@@ -95,6 +102,8 @@ class SlimeGameScene: SKScene {
     }
     
     private func setupGamebox() {
+        playableArea.position = CGPoint(x: frame.midX, y: frame.midY + 20)
+
         gbStone.position = frame.center
         gbStone.zPosition = LayerPositions.gamebox.rawValue
         
@@ -105,7 +114,26 @@ class SlimeGameScene: SKScene {
         addChild(gbPlayableArea)
     }
     
-    // MARK: Actions
+    // MARK: Animations
+    
+    private func animateAddSlime(slime: Slime, delayIncrement: inout Double) {
+        // Define a faster and bouncier scale-up animation
+        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.25) // Scale up to 120% size faster
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15) // Then scale back down to 100%, creating a bounce effect
+        
+        // Increment the delay for each slime based on its position
+        let delayAction = SKAction.wait(forDuration: 0.05 * delayIncrement)
+        
+        // Combine the actions into a sequence for the bounce effect
+        let bounceSequence = SKAction.sequence([scaleUpAction, scaleDownAction])
+        let sequence = SKAction.sequence([delayAction, bounceSequence])
+        
+        // Run the sequence on the slime
+        slime.run(sequence)
+        
+        // Increment the delay for the next slime
+        delayIncrement += 1
+    }
 
     private func wiggleAction() -> SKAction {
         let moveRight = SKAction.moveBy(x: 5, y: 0, duration: 2)
@@ -120,5 +148,64 @@ class SlimeGameScene: SKScene {
         let repeatForever = SKAction.repeatForever(group)
 
         return repeatForever
+    }
+    
+    // MARK: Touch
+    
+    private var touchStartPoint: CGPoint?
+    private var touchStartRow: Int?
+    private var touchStartColumn: Int?
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let touch = touches.first else { return }
+        let location = touch.location(in: self) // Get touch location in the scene
+
+        // Calculate the touch's position relative to the playableArea's coordinate space
+        let localX = location.x - (playableArea.position.x - playableArea.size.width / 2)
+        let localY = (playableArea.position.y + playableArea.size.height / 2) - location.y
+
+        // Ensure the touch is within the playableArea
+        if localX >= 0, localX <= playableArea.size.width, localY >= 0, localY <= playableArea.size.height {
+            let columnWidth = playableArea.size.width / CGFloat(Constants.columns)
+            let rowHeight = playableArea.size.height / CGFloat(Constants.rows)
+
+            let touchedColumn = Int(localX / columnWidth)
+            let touchedRow = Int(localY / rowHeight)
+
+            touchStartPoint = location
+            touchStartRow = touchedRow
+            touchStartColumn = touchedColumn
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let start = touchStartPoint, let touch = touches.first,
+              let startRow = touchStartRow, let startColumn = touchStartColumn else { return }
+        let endLocation = touch.location(in: self)
+        
+        // Determine the swipe direction
+        let deltaX = endLocation.x - start.x
+        let deltaY = endLocation.y - start.y
+
+        if abs(deltaX) > abs(deltaY) {
+            // Left/Right Swipe
+            if deltaX > 0 {
+                events.send(.swipe(.right, startRow))
+            } else {
+                events.send(.swipe(.left, startRow))
+            }
+        } else {
+            // Up/Down Swipe
+            if deltaY > 0 {
+                events.send(.swipe(.up, startColumn))
+            } else {
+                events.send(.swipe(.down, startColumn))
+            }
+        }
+
+        // Reset for next touch
+        touchStartPoint = nil
+        touchStartRow = nil
+        touchStartColumn = nil
     }
 }

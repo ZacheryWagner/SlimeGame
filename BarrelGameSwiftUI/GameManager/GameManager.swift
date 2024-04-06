@@ -26,6 +26,8 @@ class GameManager {
         self.board = board
         self.scene = scene
         self.boardVisualizer = boardVisualizer
+        
+        state.send(.loading)
     
         setupEvents()
         setupStateSubscriptions()
@@ -34,8 +36,8 @@ class GameManager {
     
     private func initializeGame() {
         logger.info("initializeGame")
+        
         board.generateGameReadyBoard()
-        board.prettyPrintMatrix()
     }
 
     private func setupEvents() {
@@ -70,15 +72,21 @@ class GameManager {
 
     private func handleEvent(_ event: GameEvent) {
         switch event {
-        case .playableAreaSetupComplete(let frame, let center):
+        case .playableAreaSetupComplete(_, let center):
             logger.info("handleEvent: playableAreaSetupComplete")
             board.generateGameReadyBoard()
-            boardVisualizer.update(for: board, in: frame, center: center)
+            boardVisualizer.update(for: board, center: center)
         case .boardVisualizationComplete(let slimes):
             logger.info("handleEvent: boardVisualizationComplete")
             scene.inject(slimes: slimes)
-        case .slimesUpdated(_):
-            logger.info("handleEvent: slimesUpdated")
+            state.send(.ready)
+        case .swipe(let direction, let index):
+            logger.info("handleEvent: swipe \(direction), \(index)")
+            board.move(direction: direction, index: index)
+            boardVisualizer.animateSlimesForSwipe(
+                direction: direction,
+                index: index)
+            board.prettyPrintMatrix()
         }
     }
     
