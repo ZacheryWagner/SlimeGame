@@ -6,7 +6,7 @@
 ## Development Timeline
 ### V0.1
 - [x] Matrix Logic (a 2D array data representation of the board with positions and states)
-- [x] Board Generation
+- [x] Resizable and Randomized Board Generation
 - [x] Rendering and Scene Setup
 - [x] Architecture: State Machine, Event System, Composition
 - [x] Logging
@@ -30,10 +30,12 @@
 - [ ] Playtesting (TestFlight Integration)
 
 ### V0.5
+- [ ] More Slime Colors
 - [ ] Incremental Time System
 - [ ] Scene Polish and Animations
 
 ### V0.6
+- [ ] Raindbow Slime
 - [ ] Combo System
 - [ ] Intelligent Scoring
 
