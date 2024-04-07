@@ -117,7 +117,7 @@ class SlimeGameScene: SKScene {
     // MARK: Animations
     
     private func animateAddSlime(slime: Slime, delayIncrement: inout Double) {
-        let scaleUpAction = SKAction.scale(to: 1.3, duration: 0.3)
+        let scaleUpAction = SKAction.scale(to: 1.25, duration: 0.25)
         let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15)
         
         // Increment the delay for each slime based on its position
