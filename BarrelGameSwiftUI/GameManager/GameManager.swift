@@ -10,19 +10,6 @@ import SpriteKit
 import SwiftUI
 import Combine
 
-/**
- Movement
- Row/Column Clear
- Row/Column Regen
- Points
- Time
-    RenderLoop
- High Score
-    SystemStorage service (userDefaults)
-    Game Center
- 
- */
-
 class GameManager {
     private let logger = Logger(source: GameManager.self)
     
@@ -99,7 +86,6 @@ class GameManager {
             boardVisualizer.animateSlimesForSwipe(
                 direction: direction,
                 index: index)
-            board.prettyPrintMatrix()
         }
     }
     
