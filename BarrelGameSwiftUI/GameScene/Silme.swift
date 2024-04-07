@@ -8,8 +8,7 @@
 import Foundation
 import SpriteKit
 
-class Slime: SKSpriteNode, DirectionalMovement {
-    
+class Slime: SKSpriteNode, DirectionalTextures {
     // MARK: Types
     
     enum Genus: String {
@@ -49,11 +48,12 @@ class Slime: SKSpriteNode, DirectionalMovement {
     }
     
     // MARK: DirectionalMovement
-
-    func move(in direction: Direction) {
-        // Change texture
+    
+    func updateTexture(in direction: Direction) {
         texture = directionalTextures[direction]
-        
-        // Handle Movement
+
+    }
+    func updateTextureToIdle() {
+        texture = idleTexture
     }
 }

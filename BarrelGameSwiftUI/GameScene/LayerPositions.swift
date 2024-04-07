@@ -16,5 +16,6 @@ extension SlimeGameScene {
         case fgGrass = 10
         case fgLeaves = 11
         case UI = 100
+        case debug = 200
     }
 }

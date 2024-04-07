@@ -22,7 +22,7 @@ enum GameEvent {
     
     /// The board has generated the slimes an assigned their positions
     case boardVisualizationComplete([[Slime?]])
-    
+
     /// There has been a completed swipe action on a given row or column
     case swipe(Direction, Int)
 }

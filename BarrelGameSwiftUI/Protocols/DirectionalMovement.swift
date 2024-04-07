@@ -7,8 +7,9 @@
 
 import Foundation
 
-protocol DirectionalMovement {
-    func move(in direction: Direction)
+protocol DirectionalTextures {
+    func updateTexture(in direction: Direction)
+    func updateTextureToIdle()
 }
 
 enum Direction: String, CaseIterable {

@@ -30,7 +30,6 @@ extension SlimeGameScene {
         let marker = SKShapeNode(circleOfRadius: 5)
         marker.fillColor = SKColor.red
         marker.position = frame.center
-        
         marker.zPosition = 10
         return marker
     }
@@ -61,10 +60,11 @@ extension SlimeGameScene {
     }
     
     public func setupDebugUI() {
-        addChild(debugCenterMarker)
-        addChild(debugLabel)
         addChild(generateBoardButton)
-        drawPlayableArea()
+        addChild(debugLabel)
+        
+//        addChild(debugCenterMarker)
+//        drawPlayableArea()
     }
     
     private func drawPlayableArea() {

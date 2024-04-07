@@ -117,9 +117,8 @@ class SlimeGameScene: SKScene {
     // MARK: Animations
     
     private func animateAddSlime(slime: Slime, delayIncrement: inout Double) {
-        // Define a faster and bouncier scale-up animation
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: 0.25) // Scale up to 120% size faster
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15) // Then scale back down to 100%, creating a bounce effect
+        let scaleUpAction = SKAction.scale(to: 1.3, duration: 0.3)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15)
         
         // Increment the delay for each slime based on its position
         let delayAction = SKAction.wait(forDuration: 0.05 * delayIncrement)
