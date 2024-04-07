@@ -10,6 +10,8 @@ import SpriteKit
 import SwiftUI
 import Combine
 
+
+/// Manages `GameState` and fascilitates communicates between the scene and all relevent game components.
 class GameManager {
     private let logger = Logger(source: GameManager.self)
     
@@ -75,7 +77,7 @@ class GameManager {
         case .playableAreaSetupComplete(_, let center):
             logger.info("handleEvent: playableAreaSetupComplete")
             board.generateGameReadyBoard()
-            boardVisualizer.update(for: board, center: center)
+            boardVisualizer.create(for: board, center: center)
         case .boardVisualizationComplete(let slimes):
             logger.info("handleEvent: boardVisualizationComplete")
             scene.inject(slimes: slimes)

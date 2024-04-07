@@ -7,7 +7,9 @@
 
 import Foundation
 
-/// Data model representing a `Tile` in the `Board`
+/// Data model representing a spot in the `Board` matrix.
+/// Maintains a consistent position based on placement in the Board but
+/// updates state and Slimes move over it.
 struct Tile {
     enum State: String {
         case empty

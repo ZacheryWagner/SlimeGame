@@ -9,6 +9,9 @@ import Foundation
 import Combine
 import SpriteKit
 
+
+/// Generates, positions, and animates `Slime`s based on `Board` state and `SlimeGameScene` gestures.
+/// Communicates with the `GameManager` via `events`
 class BoardVisualizer: BoardVisualizing {
     // MARK: Properties
     
@@ -17,10 +20,13 @@ class BoardVisualizer: BoardVisualizing {
     /// Informs the `GameManager` of  `GameEvent`s
     public var events = PassthroughSubject<GameEvent, Never>()
     
+    /// The slimes that are added to and moved around the scene
     private var slimes = [[Slime?]]()
     
+    /// Used to determine grid size
     private let sampleSlime = Slime(genus: .red)
     
+    /// Cached Positions
     private var positionDictionary: [String: CGPoint] = [:]
     private var startX: CGFloat = 0
     private var startY: CGFloat = 0
@@ -29,19 +35,18 @@ class BoardVisualizer: BoardVisualizing {
     init() {}
     
     // MARK: BoardVisualizing
-    
-    public func update(for board: Board, center: CGPoint) {
+
+    /// Create and populate the starting matrix of slimes
+    /// Set their positions appropriately to be scene ready
+    /// Inform the GameManager when done
+    /// - Parameters:
+    ///   - board: The data model for generating slimes
+    ///   - center: The center point to base the grid on
+    public func create(for board: Board, center: CGPoint) {
         self.center = center
 
-        // Calculate the total grid width and height to adjust positions accordingly
-        let totalGridWidth = (sampleSlime.size.width + Constants.slimePadding) * CGFloat(Constants.columns - 1)
-        let totalGridHeight = (sampleSlime.size.height + Constants.slimePadding) * CGFloat(Constants.rows - 1)
-
-        // Calculate starting positions based on the center
-        startX = center.x - (totalGridWidth / 2)
-        startY = center.y + (totalGridHeight / 2)
-
-        // Generate and store positions in the dictionary before setting slimes
+        // Layout all possible slime positions
+        setStartPosition()
         generatePositionDictionary()
 
         // Clear existing slimes and set new ones based on the board state
@@ -51,8 +56,12 @@ class BoardVisualizer: BoardVisualizing {
         // Update delegate or scene with the newly positioned slimes
         events.send(GameEvent.boardVisualizationComplete(slimes))
     }
+
     
-    // Animates slimes for a given swipe direction and index (row or column)
+    /// Move all slimes in a given row or column
+    /// - Parameters:
+    ///   - direction: The direction to move the slimes
+    ///   - index: The index of the row or column to move the slimes
     func animateSlimesForSwipe(direction: Direction, index: Int) {
         logger.info("animateSlimesForSwipe direction: \(direction), index: \(index)")
         switch direction {
@@ -65,6 +74,39 @@ class BoardVisualizer: BoardVisualizing {
     
     // MARK: Generation
     
+    /// Calulates the first slimes start position based on `Center`
+    private func setStartPosition() {
+        guard let center = center else { return }
+
+        // Calculate the total grid width and height to adjust positions accordingly
+        let totalGridWidth = (sampleSlime.size.width + Constants.slimePadding) * CGFloat(Constants.columns - 1)
+        let totalGridHeight = (sampleSlime.size.height + Constants.slimePadding) * CGFloat(Constants.rows - 1)
+
+        // Calculate starting positions based on the center
+        startX = center.x - (totalGridWidth / 2)
+        startY = center.y + (totalGridHeight / 2)
+    }
+    
+    
+    /// Populates `positionDictionary` with all possible slime positions in the grid.
+    private func generatePositionDictionary() {
+        positionDictionary = [:]
+        for row in 0..<Constants.rows {
+            for column in 0..<Constants.columns {
+                let xPosition = startX + (sampleSlime.size.width + Constants.slimePadding) * CGFloat(column)
+                let yPosition = startY - (sampleSlime.size.height + Constants.slimePadding) * CGFloat(row)
+                let key = positionKey(row: row, column: column)
+                let point = CGPoint(x: xPosition, y: yPosition)
+                positionDictionary[key] = point
+            }
+        }
+    }
+    
+    
+    /// Creates Slimes based on the Board Tile States.
+    /// Sets their positions using `positionDictionary`
+    /// Adds the slimes to their relevant row/column of the `slimes` matrix
+    /// - Parameter board: The data model for generating slimes
     private func setSlimes(for board: Board) {
         for row in 0..<Constants.rows {
             for column in 0..<Constants.columns {
@@ -79,22 +121,9 @@ class BoardVisualizer: BoardVisualizing {
                         // Log an error or handle the missing position appropriately
                         logger.error("Position for row: \(row), column: \(column) not found in dictionary.")
                     }
-
+                    
                     slimes[row][column] = slime
                 }
-            }
-        }
-    }
-    
-    private func generatePositionDictionary() {
-        positionDictionary = [:]
-        for row in 0..<Constants.rows {
-            for column in 0..<Constants.columns {
-                let xPosition = startX + (sampleSlime.size.width + Constants.slimePadding) * CGFloat(column)
-                let yPosition = startY - (sampleSlime.size.height + Constants.slimePadding) * CGFloat(row)
-                let key = positionKey(row: row, column: column)
-                let point = CGPoint(x: xPosition, y: yPosition)
-                positionDictionary[key] = point
             }
         }
     }

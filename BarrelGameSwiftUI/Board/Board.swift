@@ -7,6 +7,10 @@
 
 import Foundation
 
+
+/// A 2D Array reprentation of the playable area.  Generates the initial board state, detects and informs
+/// of row/column completion, generates new rows and columns once completed.  Uses a matrix of `Tile`s
+/// to track which types of slimes are where.
 class Board {
     private let logger = Logger(source: Board.self)
 
