@@ -55,6 +55,7 @@
 - [ ] Template System (Swappable Assets)
 
 ### V1.0 Release
+- [ ] Monetization
 - [ ] Polish
 
 ## Credits
