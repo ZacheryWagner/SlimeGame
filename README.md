@@ -1,6 +1,8 @@
 # Slimel
  Retro puzzle game about moving slimes
 
+![image](https://github.com/ZacheryWagner/SlimeGame/assets/25253120/0b530155-1d6b-416c-ad77-b9a904c41dc7)
+
 ## Development Timeline
 ### V0.1
 - [x] Matrix Logic (a 2D array data representation of the board with positions and states)
@@ -44,3 +46,11 @@
 - [ ] Game Cetner (stop gap for leaderboards)
 - [ ] Sentry Integration
 - [ ] ???
+
+## Credits
+
+### Art
+Noah Wallace
+
+### Game Design & Engineering
+Zachery O Wagner
