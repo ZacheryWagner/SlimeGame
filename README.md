@@ -35,17 +35,27 @@
 
 ### V0.6
 - [ ] Combo System
-- [ ] Intelligent scoring
+- [ ] Intelligent Scoring
 
 ### V0.7
 - [ ] Better Menues
 - [ ] Sound Settings
+- [ ] SFX & Music Improvements
 - [ ] Tutorial Sequence
 
 ### V0.8
-- [ ] Game Cetner (stop gap for leaderboards)
+- [ ] Ipad Support & MultiDevice Scaling
 - [ ] Sentry Integration
-- [ ] ???
+- [ ] Game Center (stop gap for leaderboards)
+- [ ] More Scene Life
+
+### V0.9
+- [ ] Reward System
+- [ ] Background Shop
+- [ ] Template System (Swappable Assets)
+
+### V1.0 Release
+- [ ] Polish
 
 ## Credits
 
