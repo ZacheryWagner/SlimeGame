@@ -4,7 +4,7 @@
 ![image](https://github.com/ZacheryWagner/SlimeGame/assets/25253120/0b530155-1d6b-416c-ad77-b9a904c41dc7)
 
 ## Development Timeline
-### V0.1
+### V0.1 The Engine
 - [x] Matrix Logic (a 2D array data representation of the board with positions and states)
 - [x] Resizable and Randomized Board Generation
 - [x] Rendering and Scene Setup
@@ -14,51 +14,65 @@
 - [x] Gesture Recognition (Detect swipe, translate direction and row/column)
 - [x] Slime Movement
 
-### V0.2
+### V0.2 The Gameloop
 - [ ] Row Clear and Regen
 - [ ] Multi Clear
 - [ ] Score System
-
-### V0.3
 - [ ] Menu + Game Start Loop Event
 - [ ] Time System + Game End Loop Event
 
-### V0.4
+### V0.3 Sound & Devops
 - [ ] Basic SFX
 - [ ] Background Music
 - [ ] High Score (UserDefaults Integration)
-- [ ] Sentry Integration
+- [ ] Error Tracking (Sentry Integration)
 - [ ] Playtesting (TestFlight Integration)
 
-### V0.5
-- [ ] More Slime Colors
+### V0.4 More Time More Slime
 - [ ] Incremental Time System
+- [ ] More Slime Colors
+- [ ] Raindbow Slime
 - [ ] Scene Polish and Animations
 
-### V0.6
-- [ ] Raindbow Slime
+### V0.5 Combos & Music Randomization
 - [ ] Combo System
 - [ ] Intelligent Scoring
+- [ ] SFX & Music Improvements
 
-### V0.7
+### V0.6 Menus & Device Support
+- [ ] Tutorial Sequence
 - [ ] Better Menues
 - [ ] Sound Settings
-- [ ] SFX & Music Improvements
-- [ ] Tutorial Sequence
-
-### V0.8
 - [ ] Ipad Support & MultiDevice Scaling
 - [ ] Game Center (stop gap for leaderboards)
-- [ ] More Scene Life
 
-### V0.9
+### V0.7 Missions & Rewards
 - [ ] Reward System
-- [ ] Background Shop
+- [ ] Missions
+- [ ] Achievements
+
+### V0.8 Shop
+- [ ] Assett Shop
 - [ ] Template System (Swappable Assets)
+- [ ] Monetization
+
+### V0.9 Scene Life
+- [ ] Scene Animation Cycle System
+- [ ] Add tons of life to scenes
+- [ ] Finalize assets and animations
 
 ### V1.0 Release
-- [ ] Monetization
+- [ ] Analytics (Firebase or Amplitude Integration)
 - [ ] Polish
+- [ ] Bug Fixes
+
+### V1.1 Hotfix
+- [ ] Bug Fixes
+
+## Post Release Ideas
+- Localized leaderboards
+- Daily Challenges
+- Dark Mode as Day/Night Cycle
 
 ## Credits
 
