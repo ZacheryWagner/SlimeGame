@@ -27,6 +27,7 @@
 - [ ] Basic SFX
 - [ ] Background Music
 - [ ] High Score (UserDefaults Integration)
+- [ ] Sentry Integration
 - [ ] Playtesting (TestFlight Integration)
 
 ### V0.5
@@ -47,7 +48,6 @@
 
 ### V0.8
 - [ ] Ipad Support & MultiDevice Scaling
-- [ ] Sentry Integration
 - [ ] Game Center (stop gap for leaderboards)
 - [ ] More Scene Life
 
