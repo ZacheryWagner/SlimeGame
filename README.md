@@ -68,10 +68,14 @@
 
 ### V1.1 Hotfix
 - [ ] Bug Fixes
+ 
+### v1.2 We need a backend
+- [ ] Localized leaderboards
+- [ ] Daily Challenges
+- [ ] Player leveling
+- [ ] nightmare nightmare nightmare
 
 ## Post Release Ideas
-- Localized leaderboards
-- Daily Challenges
 - Dark Mode as Day/Night Cycle
 
 ## Credits
