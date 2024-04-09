@@ -7,14 +7,14 @@
 
 import Foundation
 
+public enum LineType {
+    case row
+    case column
+}
+
 /// Data model representing a completed row or column.  A line is completed when
 /// it has been  entirely filled with a single genus of Slime durring the game loop.
 struct LineCompletionInfo {
-    enum LineType {
-        case row
-        case column
-    }
-    
     public let lineType: LineType
     
     public let index: Int

@@ -48,30 +48,34 @@ class Board {
         return matrix[row][column].state
     }
 
-    /// Generates and assigns a randomized board to `matrix` that is ready to be played
-    /// A game ready board constitutes the following:
-    /// - Two thirds of  the `totalTiles` are filled
-    /// - Half of the filled tiles are red
-    /// - Half of the filled tiles are blue
-    /// - The arrangement of the filled tiles is random
-    public func generateGameReadyBoard() {
-        logger.info("generateGameReadyBoard")
+/// Generates and assigns a randomized board to `matrix` that is ready to be played
+/// A game ready board constitutes the following:
+/// - Two thirds of  the `totalTiles` are filled
+/// - Half of the filled tiles are red
+/// - Half of the filled tiles are blue
+/// - The arrangement of the filled tiles is random
+/// - No Line Completions are in the matrix
+public func generateGameReadyBoard() {
+    logger.info("generateGameReadyBoard")
 
-        // Reset the matrix
-        matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
-        
-        // Get a list of randomized states
-        let tileStates = getRandomizedTileStates()
-        
-        // Filter the randomized array into the matrix
-        for row in 0...rowCount - 1 {
-            for column in 0...columnCount - 1 {
-                let index = row * columnCount + column // Calculate the flat index
-                let state = tileStates[index] // Directly access the state
-                matrix[row][column] = Tile(state: state, position: (row: row, column: column))
-            }
+    // Reset the matrix
+    matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
+    
+    // Get a list of randomized states
+    let tileStates = getRandomizedTileStates()
+    
+    // Filter the randomized array into the matrix
+    for row in 0...rowCount - 1 {
+        for column in 0...columnCount - 1 {
+            let index = row * columnCount + column // Calculate the flat index
+            let state = tileStates[index] // Directly access the state
+            matrix[row][column] = Tile(state: state, position: (row: row, column: column))
         }
     }
+    
+    // If there are any completions (this should be very rare) regenerate.
+    guard getLineCompletions().isEmpty else { generateGameReadyBoard() }
+}
 
     public func move(direction: Direction, index: Int) {
         logger.info("move: \(direction), \(index))")
@@ -85,6 +89,33 @@ class Board {
         case .right:
             moveRight(row: index)
         }
+    }
+    
+    public func checkAndHandleLineCompletion() {
+        var completions = getLineCompletions()
+        for completion in completions {
+            events.send(.lineCompleted(completion))
+        }
+    }
+    
+    public func replaceLine(_ lineType: LineType, at index: Int) {
+        switch lineType {
+        case .row:
+            replaceRow(at: index)
+        case .column:
+            replaceColumn(at: index)
+        }
+    }
+    
+    private func replaceColumn(at index: Int) {
+        guard index < columnCount else { return }
+        
+        
+    }
+    
+    private func replaceRow(at index: Int) {
+        guard index < rowCount else { return }
+
     }
     
     // MARK: - Generation
@@ -108,6 +139,37 @@ class Board {
         // Create a combined randomized array of types
         let combinedArray = redArray + blueArray + emptyArray
         return combinedArray.shuffled()
+    }
+    
+    /// Generates a randomized array of Tile.State, with a bias against a specified state.
+    /// The function is designed to be flexible, allowing for easy addition of new states.
+    /// - Parameters:
+    ///   - biasAgainst: The state to bias against in the generated array.
+    ///   - rowCount: The number of Tile.State items to generate.
+    /// - Returns: An array of Tile.State, biased according to the provided parameters.
+    private func getRandomizedTileStatesForNewLine(biasAgainst state: Tile.State, count: Int) -> [Tile.State] {
+        logger.info("getRandomizedTileStates biasAgainst: \(state)")
+
+        // Iterate through occupied state possinilities and assign a randomization weight.
+        var weightedStates = [Tile.State: Int]()
+        Tile.State.occupiedStates.forEach { occupiedStates in
+            // The weight to be biased againt gets a lower weight.
+            weightedStates[occupiedStates] = (occupiedStates == state) ? 1 : 3
+        }
+
+        // Populate the array with randomly selected states based on the weights.
+        var randomizedStates: [Tile.State] = []
+        for _ in 0..<count {
+            randomizedStates.append(getRandomState(for: weightedStates))
+        }
+   
+        // If all the element in the new line are equal try again.
+        // There is roughly a three percent chance of this occuring.
+        guard randomizedStates.allElementsEqual() == false else {
+            return getRandomizedTileStatesForNewLine(biasAgainst: state, count: count)
+        }
+
+        return randomizedStates
     }
     
     // MARK: - Movement
@@ -186,13 +248,11 @@ class Board {
     
     // MARK: Completion
     
-    private func checkAndHandleLineCompletion() {
+    private func getLineCompletions() -> [LineCompletionInfo] {
+        logger.info("getLineCompletions")
         var rowCompletions = getRowCompletions()
         var columnCompletions = getColumnCompletions()
-        
-        for completion in rowCompletions + columnCompletions {
-            events.send(.lineCompleted(completion))
-        }
+        return rowCompletions + columnCompletions
     }
 
     private func getRowCompletions() -> [LineCompletionInfo] {
@@ -225,7 +285,6 @@ class Board {
         return completedRows
     }
 
-    
     private func getColumnCompletions() -> [LineCompletionInfo] {
         var completedColumns = [LineCompletionInfo]()
 
@@ -263,6 +322,29 @@ class Board {
             repeating: Array(repeating: Tile(state: startingState, position: (row: 0, column: 0)), count: columns),
             count: rows)
         return matrix
+    }
+    
+    /// Selects a random Tile.State based on provided weights. This function ensures that
+    /// the selection process respects the bias weights assigned to each state.
+    ///
+    /// - Parameter weights: A dictionary where each key is a Tile.State and its value is the
+    ///   weight (the likelihood) of selecting that state.
+    /// - Returns: A randomly selected Tile.State, considering the specified weights.
+    private func getRandomState(for weightedDictionary: [Tile.State: Int]) -> Tile.State {
+        // Calculate the sum of all weights.
+        let totalWeight = weightedDictionary.values.reduce(0, +)
+        // Generate a random point within the total weight range.
+        var randomWeightPoint = Int.random(in: 1...totalWeight)
+
+        // Determine which state corresponds to the randomWeightPoint.
+        for (state, weight) in weightedDictionary {
+            randomWeightPoint -= weight
+            if randomWeightPoint <= 0 {
+                return state // Return the state once the randomWeightPoint falls to or below zero.
+            }
+        }
+
+        fatalError("This should never be reached. Check the weights and totalWeight calculation.")
     }
 }
 

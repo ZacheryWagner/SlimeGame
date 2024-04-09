@@ -53,9 +53,6 @@ class SlimeGameScene: SKScene {
         for row in slimes.indices {
             for column in slimes[row].indices {
                 if let slime = slimeMatrix[row][column] {
-                    // Start the slime at a small scale
-                    slime.setScale(0)
-                    addChild(slime)
                     animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
                 }
             }
@@ -117,6 +114,10 @@ class SlimeGameScene: SKScene {
     // MARK: Animations
     
     private func animateAddSlime(slime: Slime, delayIncrement: inout Double) {
+        // Start the slime at a small scale
+        slime.setScale(0)
+        addChild(slime)
+        
         let scaleUpAction = SKAction.scale(to: 1.25, duration: 0.25)
         let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15)
         

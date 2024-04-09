@@ -71,6 +71,19 @@ class GameManager {
             }
             .store(in: &cancellables)
     }
+    
+    /**
+     1. board moves -> boardVisualizer animates -> gameManager updates on complete
+     
+        Not an options:
+        // - cant spawn durring animation
+        // + simple event layout
+     2.  -> board fetches line completions -> BoardVisualizer animates -> gameManager updates on complete
+     3.  -> board updates -> boardVisualizer adds new slimes
+     
+     1. board moves -> boardVisualizer animates -> gameManager updates on complete
+     2. board fetches line completions -> boardVizualizer animates
+     */
 
     private func handleEvent(_ event: GameEvent) {
         switch event {
@@ -88,8 +101,9 @@ class GameManager {
             boardVisualizer.animateSlimesForSwipe(
                 direction: direction,
                 index: index)
+        case .slimesMoved:
+            board.checkAndHandleLineCompletion()
         case .lineCompleted(let completions):
-            <#code#>
             
         }
     }

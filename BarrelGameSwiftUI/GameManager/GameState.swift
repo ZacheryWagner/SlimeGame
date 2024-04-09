@@ -26,6 +26,9 @@ enum GameEvent {
     /// There has been a completed swipe action on a given row or column
     case swipe(Direction, Int)
     
+    /// The slimes have finished moving to their new place
+    case slimesMoved
+    
     /// A line has been succesfully completed durring the game loop
     case lineCompleted(LineCompletionInfo)
 }

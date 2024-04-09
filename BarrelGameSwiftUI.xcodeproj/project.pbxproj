@@ -30,6 +30,7 @@
 		A18DBAAF2BBF575700AE2C94 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAAE2BBF575700AE2C94 /* SKButton.swift */; };
 		A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */; };
 		A18DBAB32BC367A100AE2C94 /* LineCompletionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */; };
+		A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB42BC4E9AF00AE2C94 /* Array.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,7 @@
 		A18DBAAE2BBF575700AE2C94 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugUI.swift; sourceTree = "<group>"; };
 		A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineCompletionInfo.swift; sourceTree = "<group>"; };
+		A18DBAB42BC4E9AF00AE2C94 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +146,7 @@
 			children = (
 				A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */,
 				A18DBAA72BBE414F00AE2C94 /* CGRect.swift */,
+				A18DBAB42BC4E9AF00AE2C94 /* Array.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
 				A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */,
+				A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */,
 				A18DBAA62BBCCFDD00AE2C94 /* BoardVisualizing.swift in Sources */,
 				A134E8D92BB780DD0027EB09 /* Tile.swift in Sources */,
 				A18DBAA82BBE414F00AE2C94 /* CGRect.swift in Sources */,
