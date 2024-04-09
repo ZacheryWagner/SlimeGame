@@ -29,6 +29,7 @@
 		A18DBAAC2BBF53B200AE2C94 /* LayerPositions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAAB2BBF53B200AE2C94 /* LayerPositions.swift */; };
 		A18DBAAF2BBF575700AE2C94 /* SKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAAE2BBF575700AE2C94 /* SKButton.swift */; };
 		A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */; };
+		A18DBAB32BC367A100AE2C94 /* LineCompletionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +56,7 @@
 		A18DBAAB2BBF53B200AE2C94 /* LayerPositions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayerPositions.swift; sourceTree = "<group>"; };
 		A18DBAAE2BBF575700AE2C94 /* SKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
 		A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugUI.swift; sourceTree = "<group>"; };
+		A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineCompletionInfo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +86,7 @@
 				A134E8D62BB29EA60027EB09 /* Board.swift */,
 				A14C5EEC2BB8D368007C39F4 /* BoardError.swift */,
 				A134E8D82BB780DD0027EB09 /* Tile.swift */,
+				A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */,
 			);
 			path = Board;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				A114E0612BBBA58100DEA716 /* Logger.swift in Sources */,
 				A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */,
 				A114E05D2BBB9EE800DEA716 /* GameManager.swift in Sources */,
+				A18DBAB32BC367A100AE2C94 /* LineCompletionInfo.swift in Sources */,
 				A18DBAA22BBCCEB700AE2C94 /* GameManagerFactory.swift in Sources */,
 				A18DBAA42BBCCFC700AE2C94 /* BoardVisualizer.swift in Sources */,
 				A18DBAAC2BBF53B200AE2C94 /* LayerPositions.swift in Sources */,

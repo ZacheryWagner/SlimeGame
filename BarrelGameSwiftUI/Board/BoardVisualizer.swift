@@ -16,13 +16,13 @@ class BoardVisualizer: BoardVisualizing {
     // MARK: Properties
     
     private let logger = Logger(source: BoardVisualizer.self)
-    
+
     /// Informs the `GameManager` of  `GameEvent`s
     public var events = PassthroughSubject<GameEvent, Never>()
-    
+
     /// The slimes that are added to and moved around the scene
     private var slimes = [[Slime?]]()
-    
+
     /// Used to determine grid size
     private let sampleSlime = Slime(genus: .red)
     

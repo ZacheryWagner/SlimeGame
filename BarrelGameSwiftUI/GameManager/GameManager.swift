@@ -29,6 +29,8 @@ class GameManager {
         self.scene = scene
         self.boardVisualizer = boardVisualizer
         
+        self.scene.scaleMode = .aspectFill
+        
         state.send(.loading)
     
         setupEvents()
@@ -49,8 +51,6 @@ class GameManager {
                 self?.handleEvent(event)
             }
             .store(in: &cancellables)
-        
-        scene.scaleMode = .aspectFill
     }
     
     // MARK: State Machine
@@ -88,6 +88,9 @@ class GameManager {
             boardVisualizer.animateSlimesForSwipe(
                 direction: direction,
                 index: index)
+        case .lineCompleted(let completions):
+            <#code#>
+            
         }
     }
     

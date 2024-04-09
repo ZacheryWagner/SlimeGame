@@ -25,4 +25,7 @@ enum GameEvent {
 
     /// There has been a completed swipe action on a given row or column
     case swipe(Direction, Int)
+    
+    /// A line has been succesfully completed durring the game loop
+    case lineCompleted(LineCompletionInfo)
 }

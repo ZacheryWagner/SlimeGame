@@ -15,6 +15,10 @@ struct Tile {
         case empty
         case red
         case blue
+        
+        public var isOccupied: Bool {
+            return self != .empty
+        }
     }
 
     /// State represented by how the Tile is being occupied

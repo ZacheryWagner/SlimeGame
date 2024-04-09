@@ -6,13 +6,15 @@
 //
 
 import Foundation
-
+import Combine
 
 /// A 2D Array reprentation of the playable area.  Generates the initial board state, detects and informs
 /// of row/column completion, generates new rows and columns once completed.  Uses a matrix of `Tile`s
 /// to track which types of slimes are where.
 class Board {
     private let logger = Logger(source: Board.self)
+    
+    public var events = PassthroughSubject<GameEvent, Never>()
 
     private var matrix = [[Tile]]()
 
@@ -37,11 +39,11 @@ class Board {
     ///   - row: The row of the tile
     ///   - column: The column of the tile
     /// - Returns: The state of the tile
-    public func getTileState(row: Int, column: Int) -> Tile.State? {
+    public func getTileState(row: Int, column: Int) -> Tile.State {
         guard row < rowCount,
               column < columnCount else {
             logger.error(BoardError.failedToGetTile(row, column))
-            return nil
+            return Tile.State.empty
         }
         return matrix[row][column].state
     }
@@ -85,7 +87,7 @@ class Board {
         }
     }
     
-    // MARK: - Private
+    // MARK: - Generation
 
     /// Creates and returns a randomized array of tile states based on `rowCount` and `columnCount`
     /// - Returns: A shuffled array of `Tile.State`
@@ -107,6 +109,8 @@ class Board {
         let combinedArray = redArray + blueArray + emptyArray
         return combinedArray.shuffled()
     }
+    
+    // MARK: - Movement
 
     private func moveRight(row: Int) {
         logger.info("moveRight(row): \(row)")
@@ -178,6 +182,77 @@ class Board {
         for (row, state) in statesInColumn.enumerated() {
             matrix[row][column].updateState(state)
         }
+    }
+    
+    // MARK: Completion
+    
+    private func checkAndHandleLineCompletion() {
+        var rowCompletions = getRowCompletions()
+        var columnCompletions = getColumnCompletions()
+        
+        for completion in rowCompletions + columnCompletions {
+            events.send(.lineCompleted(completion))
+        }
+    }
+
+    private func getRowCompletions() -> [LineCompletionInfo] {
+        var completedRows = [LineCompletionInfo]()
+
+        for row in 0..<rowCount {
+            // Skip row if the first tile is empty
+            let firstState = getTileState(row: row, column: 0)
+            guard firstState.isOccupied else { continue }
+
+            // We start true until proven otherwise
+            var isComplete = true
+
+            // Start from the second tile
+            for column in 1..<columnCount {
+                let currentState = getTileState(row: row, column: column)
+                if currentState != firstState || currentState.isOccupied == false {
+                    // Exit the loop early as this row is not complete
+                    isComplete = false
+                    break
+                }
+            }
+
+            if isComplete {
+                let info = LineCompletionInfo(lineType: .row, index: row, state: firstState)
+                completedRows.append(info)
+            }
+        }
+
+        return completedRows
+    }
+
+    
+    private func getColumnCompletions() -> [LineCompletionInfo] {
+        var completedColumns = [LineCompletionInfo]()
+
+        for column in 0..<columnCount {
+            // Skip column if the first tile is empty
+            let firstState = getTileState(row: 0, column: column)
+            guard firstState.isOccupied else { continue }
+
+            var isComplete = true
+
+            // Start from the second tile/
+            for row in 1..<rowCount {
+                let currentState = getTileState(row: row, column: column)
+                if currentState != firstState || !currentState.isOccupied {
+                    // Exit the loop early as this column is not complete
+                    isComplete = false
+                    break
+                }
+            }
+
+            if isComplete {
+                let info = LineCompletionInfo(lineType: .column, index: column, state: firstState)
+                completedColumns.append(info)
+            }
+        }
+
+        return completedColumns
     }
 
     // MARK: Helpers
