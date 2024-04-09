@@ -21,7 +21,7 @@ class Constants {
     /// Pixels between slimes
     static let slimePadding: CGFloat = pixelWidth * 1
     
-    static let slimeSlideDuration: CGFloat = 0.15
+    static let slimeSlideDuration: CGFloat = 0.1
     
     /// These need to go away once I get corrected assets
     static let playableAreaSize = CGSize(width: 310, height: 404)

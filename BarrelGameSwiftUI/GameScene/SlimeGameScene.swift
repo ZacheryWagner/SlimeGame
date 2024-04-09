@@ -126,6 +126,7 @@ class SlimeGameScene: SKScene {
         
         // Combine the actions into a sequence for the bounce effect
         let bounceSequence = SKAction.sequence([scaleUpAction, scaleDownAction])
+        bounceSequence.timingMode = .easeOut
         let sequence = SKAction.sequence([delayAction, bounceSequence])
         
         // Run the sequence on the slime
