@@ -45,8 +45,6 @@ extension SlimeGameScene {
         button.action = { [weak self] in
             guard let self = self else { return }
             
-            self.removeChildren(in: slimeMatrix.flatMap({ $0 }).compactMap({ $0 }))
-
             events.send(
                 .playableAreaSetupComplete(
                     playableArea.frame,

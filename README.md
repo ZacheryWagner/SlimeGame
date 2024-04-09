@@ -15,7 +15,9 @@
 - [x] Slime Movement
 
 ### V0.2 The Gameloop
-- [ ] Row Clear and Regen
+- [x] Row Clear
+- [ ] Row Regen
+- [ ] Row Clear Animations
 - [ ] Multi Clear
 - [ ] Score System
 - [ ] Menu + Game Start Loop Event

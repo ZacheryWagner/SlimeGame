@@ -23,6 +23,8 @@ class Constants {
     
     static let slimeSlideDuration: CGFloat = 0.1
     
+    static let slimeRemovalDuration: CGFloat = 0.35
+    
     /// These need to go away once I get corrected assets
     static let playableAreaSize = CGSize(width: 310, height: 404)
     static let playableAreaVerticalOffset: CGFloat = 20

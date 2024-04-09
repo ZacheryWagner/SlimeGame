@@ -48,37 +48,37 @@ class Board {
         return matrix[row][column].state
     }
 
-/// Generates and assigns a randomized board to `matrix` that is ready to be played
-/// A game ready board constitutes the following:
-/// - Two thirds of  the `totalTiles` are filled
-/// - Half of the filled tiles are red
-/// - Half of the filled tiles are blue
-/// - The arrangement of the filled tiles is random
-/// - No Line Completions are in the matrix
-public func generateGameReadyBoard() {
-    logger.info("generateGameReadyBoard")
+    /// Generates and assigns a randomized board to `matrix` that is ready to be played
+    /// A game ready board constitutes the following:
+    /// - Two thirds of  the `totalTiles` are filled
+    /// - Half of the filled tiles are red
+    /// - Half of the filled tiles are blue
+    /// - The arrangement of the filled tiles is random
+    /// - No Line Completions are in the matrix
+    public func generateGameReadyBoard() {
+        logger.info("generateGameReadyBoard")
 
-    // Reset the matrix
-    matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
-    
-    // Get a list of randomized states
-    let tileStates = getRandomizedTileStates()
-    
-    // Filter the randomized array into the matrix
-    for row in 0...rowCount - 1 {
-        for column in 0...columnCount - 1 {
-            let index = row * columnCount + column // Calculate the flat index
-            let state = tileStates[index] // Directly access the state
-            matrix[row][column] = Tile(state: state, position: (row: row, column: column))
+        // Reset the matrix
+        matrix = createMatrix(rows: rowCount, columns: columnCount, startingState: .empty)
+        
+        // Get a list of randomized states
+        let tileStates = getRandomizedTileStates()
+        
+        // Filter the randomized array into the matrix
+        for row in 0...rowCount - 1 {
+            for column in 0...columnCount - 1 {
+                let index = row * columnCount + column // Calculate the flat index
+                let state = tileStates[index] // Directly access the state
+                matrix[row][column] = Tile(state: state, position: (row: row, column: column))
+            }
+        }
+        
+        // If there are any completions (this should be very rare) regenerate.
+        guard getLineCompletions().isEmpty else {
+            generateGameReadyBoard()
+            return
         }
     }
-    
-    // If there are any completions (this should be very rare) regenerate.
-    guard getLineCompletions().isEmpty else {
-        generateGameReadyBoard()
-        return
-    }
-}
 
     public func move(direction: Direction, index: Int) {
         logger.info("move: \(direction), \(index))")
@@ -101,27 +101,7 @@ public func generateGameReadyBoard() {
             events.send(.lineCompleted(completion))
         }
     }
-    
-    public func replaceLine(_ lineType: LineType, at index: Int) {
-        switch lineType {
-        case .row:
-            replaceRow(at: index)
-        case .column:
-            replaceColumn(at: index)
-        }
-    }
-    
-    private func replaceColumn(at index: Int) {
-        guard index < columnCount else { return }
-        
-        
-    }
-    
-    private func replaceRow(at index: Int) {
-        guard index < rowCount else { return }
 
-    }
-    
     // MARK: - Generation
 
     /// Creates and returns a randomized array of tile states based on `rowCount` and `columnCount`
@@ -348,7 +328,10 @@ public func generateGameReadyBoard() {
             }
         }
 
-        fatalError("This should never be reached. Check the weights and totalWeight calculation.")
+        // This should never be reached. Check the weights and totalWeight calculation.
+        // Worst case scenario just return any state for some elegent error handling.
+        logger.error(BoardError.failedToGetWeightedState)
+        return Tile.State.red
     }
 }
 

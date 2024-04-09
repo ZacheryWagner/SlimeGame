@@ -23,7 +23,6 @@ class SlimeGameScene: SKScene {
     private var gbPlayableArea = SKSpriteNode(imageNamed: "ruins_gb_playable_area")
     
     internal var playableArea = SKSpriteNode(color: .clear, size: Constants.playableAreaSize)
-    internal var slimeMatrix = [[Slime?]]()
 
     // MARK: Lifecycle
     
@@ -47,12 +46,11 @@ class SlimeGameScene: SKScene {
 
     public func inject(slimes: [[Slime?]]) {
         logger.info("inject slimes")
-        slimeMatrix = slimes
         var delayIncrement = 0.0
         
         for row in slimes.indices {
             for column in slimes[row].indices {
-                if let slime = slimeMatrix[row][column] {
+                if let slime = slimes[row][column] {
                     animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
                 }
             }

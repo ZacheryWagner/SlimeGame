@@ -11,6 +11,7 @@ enum BoardError: Error {
     case failedToGenerateGameBoard
     case failedToGetTile(Int, Int)
     case failedToMove(Direction, Int?, Int?)
+    case failedToGetWeightedState
 }
 
 extension BoardError: LocalizedError {
@@ -22,6 +23,8 @@ extension BoardError: LocalizedError {
             return "failedToGetTile at row: \(row) and column \(column)"
         case .failedToMove(let direction, let row, let column):
             return "failedToMove \(direction), \(String(describing: row)), \(String(describing: column))"
+        case .failedToGetWeightedState:
+            return "getRandomState failed for weightedDictionary"
         }
     }
 }

@@ -48,6 +48,14 @@ class BoardVisualizer: BoardVisualizing {
     ///   - board: The data model for generating slimes
     ///   - center: The center point to base the grid on
     public func create(for board: Board, center: CGPoint) {
+        // Remove slimes before generating a new board.
+        // This is currently only relevant for debug mode.
+        for column in slimeMatrix {
+            for slime in column {
+                slime?.removeFromParent()
+            }
+        }
+
         self.center = center
 
         // Layout all possible slime positions
@@ -80,17 +88,66 @@ class BoardVisualizer: BoardVisualizing {
     func handleLineCompletion(_ completion: LineCompletionInfo) {
         switch completion.lineType {
         case .row:
-            break
+            animateAndRemoveSlimesInRow(at: completion.index, completion: {
+                return
+            })
         case .column:
-            break
+            animateAndRemoveSlimesInColumn(at: completion.index, completion: {
+                return
+            })
         }
     }
+
+    func animateAndRemoveSlimesInRow(at rowIndex: Int, completion: @escaping () -> Void) {
+        guard rowIndex < slimeMatrix.count else { return }
+
+        let animationGroup = DispatchGroup()
+        
+        for (columnIndex, slime) in slimeMatrix[rowIndex].enumerated() {
+            guard let slime = slime else { continue }
+            animationGroup.enter()
+
+            animateRemoval(of: slime, atRow: rowIndex, column: columnIndex) {
+                self.slimeMatrix[rowIndex][columnIndex] = nil
+                animationGroup.leave()
+            }
+        }
+        
+        animationGroup.notify(queue: .main, execute: completion)
+    }
+
+    func animateAndRemoveSlimesInColumn(at columnIndex: Int, completion: @escaping () -> Void) {
+        guard columnIndex < slimeMatrix.first?.count ?? 0 else { return }
+        
+        let animationGroup = DispatchGroup()
+        
+        for rowIndex in 0..<slimeMatrix.count {
+            guard let slime = slimeMatrix[rowIndex][columnIndex] else { continue }
+            animationGroup.enter()
+            
+            animateRemoval(of: slime, atRow: rowIndex, column: columnIndex) {
+                self.slimeMatrix[rowIndex][columnIndex] = nil
+                animationGroup.leave()
+            }
+        }
+        
+        animationGroup.notify(queue: .main, execute: completion)
+    }
+
     
-    private func animateAndRemoveSlimesInRow(at index: Int) {
-        guard let firstColumn = slimeMatrix.first,
-              index < firstColumn.count else { return }
+    private func animateRemoval(of slime: Slime, atRow rowIndex: Int, column columnIndex: Int, completion: @escaping () -> Void) {
+        // Configure the bounce and shrink actions
+        let scaleUpAction = SKAction.scale(to: 1.1, duration: Constants.slimeRemovalDuration/3)
+        let scaleDownAction = SKAction.scale(to: 0, duration: (Constants.slimeRemovalDuration/3) * 2)
+        scaleDownAction.timingMode = .easeIn
         
+        // Create a sequence for the bounce effect followed by shrink
+        let sequence = SKAction.sequence([scaleUpAction, scaleDownAction])
         
+        slime.run(sequence) {
+            slime.removeFromParent()
+            completion()
+        }
     }
     
     // MARK: Generation
