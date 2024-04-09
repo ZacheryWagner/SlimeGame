@@ -27,8 +27,25 @@ enum GameEvent {
     case swipe(Direction, Int)
     
     /// The slimes have finished moving to their new place
-    case slimesMoved
+    case slimesFinishedMovement
     
     /// A line has been succesfully completed durring the game loop
     case lineCompleted(LineCompletionInfo)
+}
+
+extension GameEvent {
+    var localizedDescription: String {
+        switch self {
+        case .playableAreaSetupComplete(_, _):
+            return "playableAreaSetupComplete"
+        case .boardVisualizationComplete(_):
+            return "boardVisualizationComplete"
+        case .swipe(let direction, let index):
+            return "swipe \(direction) at: \(index)"
+        case .slimesFinishedMovement:
+            return "slimesFinishedMovement"
+        case .lineCompleted(let completion):
+            return "lineCompleted: \(completion.lineType) at \(completion.index)"
+        }
+    }
 }

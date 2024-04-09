@@ -27,4 +27,6 @@ protocol BoardVisualizing {
     ///   - direction: The direction to move the slimes
     ///   - index: The index of the row or column to move the slimes
     func animateSlimesForSwipe(direction: Direction, index: Int)
+    
+    func handleLineCompletion(_ completion: LineCompletionInfo)
 }

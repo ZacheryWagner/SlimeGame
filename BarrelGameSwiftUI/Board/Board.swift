@@ -74,7 +74,10 @@ public func generateGameReadyBoard() {
     }
     
     // If there are any completions (this should be very rare) regenerate.
-    guard getLineCompletions().isEmpty else { generateGameReadyBoard() }
+    guard getLineCompletions().isEmpty else {
+        generateGameReadyBoard()
+        return
+    }
 }
 
     public func move(direction: Direction, index: Int) {
@@ -92,7 +95,8 @@ public func generateGameReadyBoard() {
     }
     
     public func checkAndHandleLineCompletion() {
-        var completions = getLineCompletions()
+        logger.info("checkAndHandleLineCompletion")
+        let completions = getLineCompletions()
         for completion in completions {
             events.send(.lineCompleted(completion))
         }

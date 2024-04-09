@@ -47,6 +47,7 @@ class GameManager {
     private func setupEvents() {
         scene.events
             .merge(with: boardVisualizer.events)
+            .merge(with: board.events)
             .sink { [weak self] event in
                 self?.handleEvent(event)
             }
@@ -86,25 +87,23 @@ class GameManager {
      */
 
     private func handleEvent(_ event: GameEvent) {
+        logger.info("handleEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
-            logger.info("handleEvent: playableAreaSetupComplete")
             board.generateGameReadyBoard()
             boardVisualizer.create(for: board, center: center)
         case .boardVisualizationComplete(let slimes):
-            logger.info("handleEvent: boardVisualizationComplete")
             scene.inject(slimes: slimes)
             state.send(.ready)
         case .swipe(let direction, let index):
-            logger.info("handleEvent: swipe \(direction), \(index)")
             board.move(direction: direction, index: index)
             boardVisualizer.animateSlimesForSwipe(
                 direction: direction,
                 index: index)
-        case .slimesMoved:
+        case .slimesFinishedMovement:
             board.checkAndHandleLineCompletion()
-        case .lineCompleted(let completions):
-            
+        case .lineCompleted(let completion):
+            boardVisualizer.handleLineCompletion(completion)
         }
     }
     

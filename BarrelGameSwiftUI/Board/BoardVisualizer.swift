@@ -21,10 +21,15 @@ class BoardVisualizer: BoardVisualizing {
     public var events = PassthroughSubject<GameEvent, Never>()
 
     /// The slimes that are added to and moved around the scene
-    private var slimes = [[Slime?]]()
+    private var slimeMatrix = [[Slime?]]()
 
     /// Used to determine grid size
     private let sampleSlime = Slime(genus: .red)
+    
+    /// Used to send completion event once all animations in a movement are finished
+    private var animationsCount: Int = 0
+    private var animationsCompleted: Int = 0
+    private var animationCompletionEventSent: Bool = false
     
     /// Cached Positions
     private var positionDictionary: [String: CGPoint] = [:]
@@ -50,11 +55,11 @@ class BoardVisualizer: BoardVisualizing {
         generatePositionDictionary()
 
         // Clear existing slimes and set new ones based on the board state
-        slimes = Array(repeating: Array(repeating: nil, count: Constants.columns), count: Constants.rows)
+        slimeMatrix = Array(repeating: Array(repeating: nil, count: Constants.columns), count: Constants.rows)
         setSlimes(for: board)
 
         // Update delegate or scene with the newly positioned slimes
-        events.send(GameEvent.boardVisualizationComplete(slimes))
+        events.send(GameEvent.boardVisualizationComplete(slimeMatrix))
     }
 
     
@@ -66,10 +71,26 @@ class BoardVisualizer: BoardVisualizing {
         logger.info("animateSlimesForSwipe direction: \(direction), index: \(index)")
         switch direction {
         case .left, .right:
-            animateSlimesInRow(index, direction: direction)
+            animateSlimeMovementInRow(index, direction: direction)
         case .up, .down:
-            animateSlimesInColumn(index, direction: direction)
+            animateSlimeMovementInColumn(index, direction: direction)
         }
+    }
+    
+    func handleLineCompletion(_ completion: LineCompletionInfo) {
+        switch completion.lineType {
+        case .row:
+            break
+        case .column:
+            break
+        }
+    }
+    
+    private func animateAndRemoveSlimesInRow(at index: Int) {
+        guard let firstColumn = slimeMatrix.first,
+              index < firstColumn.count else { return }
+        
+        
     }
     
     // MARK: Generation
@@ -122,7 +143,7 @@ class BoardVisualizer: BoardVisualizing {
                         logger.error("Position for row: \(row), column: \(column) not found in dictionary.")
                     }
                     
-                    slimes[row][column] = slime
+                    slimeMatrix[row][column] = slime
                 }
             }
         }
@@ -130,16 +151,19 @@ class BoardVisualizer: BoardVisualizing {
     
     // MARK: Movement
 
-    private func animateSlimesInRow(_ row: Int, direction: Direction) {
+    private func animateSlimeMovementInRow(_ row: Int, direction: Direction) {
         guard row < Constants.rows else { return }
 
         // Temporary array to hold the new state of the row
         var newRow = [Slime?](repeating: nil, count: Constants.columns)
-        let nonEmptySlimes = slimes[row].compactMap { $0 }
+        let nonEmptySlimes = slimeMatrix[row].compactMap { $0 }
+        
+        prepareForAnimation(with: nonEmptySlimes.count)
 
         // Determine where the first slime should move based on the direction
         let startIndex = direction == .right ? Constants.columns - nonEmptySlimes.count : 0
 
+        // For all slimes
         for (index, slime) in nonEmptySlimes.enumerated() {
             let targetColumn = startIndex + index
             newRow[targetColumn] = slime // Update the new row state
@@ -147,26 +171,30 @@ class BoardVisualizer: BoardVisualizing {
             // Use the position dictionary to animate the slime to its new position
             if let newPosition = getPositionFor(row: row, column: targetColumn) {
                 slime.updateTexture(in: direction)
-                animateSlime(slime, to: newPosition) {
+                animateSlimeMovement(slime, to: newPosition) { [weak self] in
                     slime.updateTextureToIdle()
+                    self?.animationDidComplete()
                 }
             }
         }
 
         // Update the matrix to reflect the new row state
-        slimes[row] = newRow
+        slimeMatrix[row] = newRow
     }
 
-    private func animateSlimesInColumn(_ column: Int, direction: Direction) {
+    private func animateSlimeMovementInColumn(_ column: Int, direction: Direction) {
         guard column < Constants.columns else { return }
 
         // Temporary array to hold the new state of the column
         var newColumn = [Slime?](repeating: nil, count: Constants.rows)
-        let nonEmptySlimes = slimes.map { $0[column] }.compactMap { $0 }
+        let nonEmptySlimes = slimeMatrix.map { $0[column] }.compactMap { $0 }
+        
+        prepareForAnimation(with: nonEmptySlimes.count)
 
         // Determine where the first slime should move based on the direction
         let startIndex = direction == .down ? Constants.rows - nonEmptySlimes.count : 0
 
+        // For all slimes
         for (index, slime) in nonEmptySlimes.enumerated() {
             let targetRow = startIndex + index
             newColumn[targetRow] = slime // Update the new column state
@@ -174,27 +202,45 @@ class BoardVisualizer: BoardVisualizing {
             // Animate the slime to its new position using the position dictionary
             if let newPosition = getPositionFor(row: targetRow, column: column) {
                 slime.updateTexture(in: direction)
-                animateSlime(slime, to: newPosition) {
+                animateSlimeMovement(slime, to: newPosition) { [weak self] in
                     slime.updateTextureToIdle()
+                    self?.animationDidComplete()
                 }
             }
         }
 
         // Update each row in the matrix to reflect the new column state
         for rowIndex in 0..<Constants.rows {
-            slimes[rowIndex][column] = newColumn[rowIndex]
+            slimeMatrix[rowIndex][column] = newColumn[rowIndex]
         }
     }
     
-    private func animateSlime(_ slime: Slime, to position: CGPoint, withCompletion completion: @escaping () -> Void) {
+    private func animateSlimeMovement(_ slime: Slime, to position: CGPoint, withCompletion completion: @escaping () -> Void) {
         let moveAction = SKAction.move(to: position, duration: Constants.slimeSlideDuration)
         let scaleUpAction = SKAction.scale(to: 1.1, duration: Constants.slimeSlideDuration * 0.5)
         let scaleDownAction = SKAction.scale(to: 1.0, duration: Constants.slimeSlideDuration * 0.5)
         let bounceAction = SKAction.sequence([scaleUpAction, scaleDownAction])
         let groupAction = SKAction.group([moveAction, bounceAction])
+        groupAction.timingMode = .easeOut
         
         slime.run(groupAction, completion: completion)
     }
+    
+    private func prepareForAnimation(with count: Int) {
+        animationsCount = count
+        animationsCompleted = 0
+        animationCompletionEventSent = false
+    }
+
+    private func animationDidComplete() {
+        animationsCompleted += 1
+        if animationsCompleted == animationsCount && !animationCompletionEventSent {
+            animationCompletionEventSent = true
+            events.send(.slimesFinishedMovement)
+        }
+    }
+    
+    // MARK: Line Completion
     
     // MARK: Helpers
     
