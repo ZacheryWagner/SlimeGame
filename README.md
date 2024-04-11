@@ -82,7 +82,7 @@
 
 ## Credits
 
-### Art
+### Art & Animation
 Noah Wallace
 
 ### Game Design & Engineering
