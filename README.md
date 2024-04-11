@@ -16,9 +16,9 @@
 
 ### V0.2 The Gameloop
 - [x] Row Clear
-- [ ] Row Regen
+- [x] Row Regen
 - [ ] Row Clear Animations
-- [ ] Multi Clear
+- [x] Multi Clear
 - [ ] Score System
 - [ ] Menu + Game Start Loop Event
 - [ ] Time System + Game End Loop Event
