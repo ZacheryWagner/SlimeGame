@@ -44,16 +44,25 @@ class SlimeGameScene: SKScene {
     
     // MARK: Public
 
-    public func inject(slimes: [[Slime?]]) {
-        logger.info("inject slimes")
+    public func inject(slimeMatrix: [[Slime?]]) {
+        logger.info("inject slimeMatrix")
         var delayIncrement = 0.0
         
-        for row in slimes.indices {
-            for column in slimes[row].indices {
-                if let slime = slimes[row][column] {
+        for row in slimeMatrix.indices {
+            for column in slimeMatrix[row].indices {
+                if let slime = slimeMatrix[row][column] {
                     animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
                 }
             }
+        }
+    }
+    
+    public func inject(slimes: [Slime]) {
+        logger.info("inject slimes")
+        var delayIncrement = 0.0
+        
+        for slime in slimes {
+            animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
         }
     }
     

@@ -21,7 +21,7 @@ class Constants {
     /// Pixels between slimes
     static let slimePadding: CGFloat = pixelWidth * 1
     
-    static let slimeSlideDuration: CGFloat = 0.1
+    static let slimeSlideDuration: CGFloat = 0.15
     
     static let slimeRemovalDuration: CGFloat = 0.35
     

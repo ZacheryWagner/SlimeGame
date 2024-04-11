@@ -11,24 +11,6 @@ import Foundation
 /// Maintains a consistent position based on placement in the Board but
 /// updates state and Slimes move over it.
 struct Tile {
-    enum State: String, Equatable {
-        case empty
-        case red
-        case blue
-        
-        static var occupiedStates: [State] {
-            return [.red, .blue]
-        }
-
-        public var isOccupied: Bool {
-            return self != .empty
-        }
-        
-        static func == (lhs: Tile.State, rhs: Tile.State) -> Bool {
-            return lhs.rawValue == rhs.rawValue
-        }
-    }
-
     /// State represented by how the Tile is being occupied
     public private(set) var state: State = .empty
 
@@ -42,5 +24,38 @@ struct Tile {
     
     public mutating func updateState(_ state: State) {
         self.state = state
+    }
+}
+
+// MARK: State
+
+extension Tile {
+    enum State: String, Equatable {
+        case empty
+        case red
+        case blue
+        
+        public var asGenus: Slime.Genus? {
+            switch self {
+            case .empty:
+                return nil
+            case .red:
+                return .red
+            case .blue:
+                return .blue
+            }
+        }
+        
+        public var isOccupied: Bool {
+            return self != .empty
+        }
+        
+        static var occupiedStates: [State] {
+            return [.red, .blue]
+        }
+        
+        static func == (lhs: Tile.State, rhs: Tile.State) -> Bool {
+            return lhs.rawValue == rhs.rawValue
+        }
     }
 }

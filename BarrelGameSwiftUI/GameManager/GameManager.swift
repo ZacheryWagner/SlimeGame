@@ -72,19 +72,6 @@ class GameManager {
             }
             .store(in: &cancellables)
     }
-    
-    /**
-     1. board moves -> boardVisualizer animates -> gameManager updates on complete
-     
-        Not an options:
-        // - cant spawn durring animation
-        // + simple event layout
-     2.  -> board fetches line completions -> BoardVisualizer animates -> gameManager updates on complete
-     3.  -> board updates -> boardVisualizer adds new slimes
-     
-     1. board moves -> boardVisualizer animates -> gameManager updates on complete
-     2. board fetches line completions -> boardVizualizer animates
-     */
 
     private func handleEvent(_ event: GameEvent) {
         logger.info("handleEvent: \(event.localizedDescription)")
@@ -93,7 +80,7 @@ class GameManager {
             board.generateGameReadyBoard()
             boardVisualizer.create(for: board, center: center)
         case .boardVisualizationComplete(let slimes):
-            scene.inject(slimes: slimes)
+            scene.inject(slimeMatrix: slimes)
             state.send(.ready)
         case .swipe(let direction, let index):
             board.move(direction: direction, index: index)
@@ -104,6 +91,11 @@ class GameManager {
             board.checkAndHandleLineCompletion()
         case .lineCompleted(let completion):
             boardVisualizer.handleLineCompletion(completion)
+        case .slimesFinishedDespawning(let completion):
+            var lineRegenInfo = board.generateNewLine(for: completion)
+            boardVisualizer.generateNewSlimes(from: lineRegenInfo)
+        case .newSlimesPrepared(let slimes):
+            scene.inject(slimes: slimes)
         }
     }
     

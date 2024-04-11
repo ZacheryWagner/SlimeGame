@@ -18,6 +18,8 @@ class Slime: SKSpriteNode, DirectionalTextures {
 
     // MARK: Properties
     
+    private let logger = Logger(source: Slime.self)
+    
     private var idleTexture: SKTexture
     
     private var directionalTextures: [Direction: SKTexture] = [:]

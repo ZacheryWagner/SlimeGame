@@ -31,6 +31,7 @@
 		A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */; };
 		A18DBAB32BC367A100AE2C94 /* LineCompletionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */; };
 		A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB42BC4E9AF00AE2C94 /* Array.swift */; };
+		A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBABA2BC7613600AE2C94 /* BoardVisualizerError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		A18DBAB02BBF5EC800AE2C94 /* DebugUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugUI.swift; sourceTree = "<group>"; };
 		A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineCompletionInfo.swift; sourceTree = "<group>"; };
 		A18DBAB42BC4E9AF00AE2C94 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
+		A18DBABA2BC7613600AE2C94 /* BoardVisualizerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardVisualizerError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,9 +86,10 @@
 		A114E05E2BBB9F4200DEA716 /* Board */ = {
 			isa = PBXGroup;
 			children = (
-				A18DBAA32BBCCFC700AE2C94 /* BoardVisualizer.swift */,
 				A134E8D62BB29EA60027EB09 /* Board.swift */,
 				A14C5EEC2BB8D368007C39F4 /* BoardError.swift */,
+				A18DBAA32BBCCFC700AE2C94 /* BoardVisualizer.swift */,
+				A18DBABA2BC7613600AE2C94 /* BoardVisualizerError.swift */,
 				A134E8D82BB780DD0027EB09 /* Tile.swift */,
 				A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */,
 			);
@@ -122,12 +125,12 @@
 			children = (
 				A18DBAAD2BBF574900AE2C94 /* Components */,
 				A18DBAAA2BBF537500AE2C94 /* Config */,
+				A114E05E2BBB9F4200DEA716 /* Board */,
 				A18DBAA92BBF535800AE2C94 /* GameScene */,
 				A18DBA9C2BBCCE1800AE2C94 /* GameManager */,
 				A114E05F2BBBA55900DEA716 /* Services */,
 				A114E0592BBB700500DEA716 /* Protocols */,
 				A14C5EF02BB91696007C39F4 /* Extensions */,
-				A114E05E2BBB9F4200DEA716 /* Board */,
 				A134E8C62BB283C20027EB09 /* ContentView.swift */,
 			);
 			path = BarrelGameSwiftUI;
@@ -277,6 +280,7 @@
 				A18DBAA02BBCCE6800AE2C94 /* Constants.swift in Sources */,
 				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
+				A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */,
 				A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */,
 				A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */,
 				A18DBAA62BBCCFDD00AE2C94 /* BoardVisualizing.swift in Sources */,

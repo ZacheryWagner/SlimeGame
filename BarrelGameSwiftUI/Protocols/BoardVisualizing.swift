@@ -29,4 +29,6 @@ protocol BoardVisualizing {
     func animateSlimesForSwipe(direction: Direction, index: Int)
     
     func handleLineCompletion(_ completion: LineCompletionInfo)
+    
+    func generateNewSlimes(from regenInfo: LineRegenerationInfo)
 }

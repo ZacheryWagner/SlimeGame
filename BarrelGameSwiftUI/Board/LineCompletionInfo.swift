@@ -27,3 +27,17 @@ struct LineCompletionInfo {
         self.state = state
     }
 }
+
+struct LineRegenerationInfo {
+    public let lineType: LineType
+    
+    public let index: Int
+    
+    public let tiles: [Tile]
+    
+    init(lineType: LineType, index: Int, tiles: [Tile]) {
+        self.lineType = lineType
+        self.index = index
+        self.tiles = tiles
+    }
+}

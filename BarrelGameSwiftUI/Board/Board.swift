@@ -99,7 +99,29 @@ class Board {
         let completions = getLineCompletions()
         for completion in completions {
             events.send(.lineCompleted(completion))
+            updateCompletedLineToEmpty(for: completion)
         }
+    }
+    
+    @discardableResult
+    public func generateNewLine(for completion: LineCompletionInfo) -> LineRegenerationInfo {
+        logger.info("regenerateLine at \(completion.lineType) \(completion.index)")
+        
+        // Get the states
+        let newStates = getRandomizedTileStatesForNewLine(
+            biasAgainst: completion.state,
+            count: completion.lineType == .row ? rowCount : columnCount)
+        
+        // Update the Matirx
+        let tiles = populateMatrixLine(completion.lineType, at: completion.index, with: newStates)
+        
+        // Create and return the necessary info to update visuals
+        let regenInfo = LineRegenerationInfo(
+            lineType: completion.lineType,
+            index: completion.index,
+            tiles: tiles)
+        
+        return regenInfo
     }
 
     // MARK: - Generation
@@ -138,7 +160,7 @@ class Board {
         var weightedStates = [Tile.State: Int]()
         Tile.State.occupiedStates.forEach { occupiedStates in
             // The weight to be biased againt gets a lower weight.
-            weightedStates[occupiedStates] = (occupiedStates == state) ? 1 : 3
+            weightedStates[occupiedStates] = (occupiedStates == state) ? 2 : 3
         }
 
         // Populate the array with randomly selected states based on the weights.
@@ -179,7 +201,7 @@ class Board {
             matrix[row][column].updateState(state)
         }
     }
-    
+
     private func moveLeft(row: Int) {
         logger.info("moveLeft(row): \(row)")
         guard row < rowCount else { return }
@@ -195,7 +217,7 @@ class Board {
             matrix[row][column].updateState(state)
         }
     }
-    
+
     private func moveUp(column: Int) {
         logger.info("moveUp(column): \(column)")
         guard column < columnCount else { return }
@@ -230,12 +252,12 @@ class Board {
         }
     }
     
-    // MARK: Completion
+    // MARK: Completion & Regen
     
     private func getLineCompletions() -> [LineCompletionInfo] {
         logger.info("getLineCompletions")
-        var rowCompletions = getRowCompletions()
-        var columnCompletions = getColumnCompletions()
+        let rowCompletions = getRowCompletions()
+        let columnCompletions = getColumnCompletions()
         return rowCompletions + columnCompletions
     }
 
@@ -296,6 +318,44 @@ class Board {
         }
 
         return completedColumns
+    }
+
+    private func updateCompletedLineToEmpty(for completion: LineCompletionInfo) {
+        switch completion.lineType {
+        case .row:
+            for column in 0..<columnCount {
+                matrix[completion.index][column].updateState(.empty)
+            }
+        case .column:
+            for row in 0..<rowCount {
+                matrix[row][completion.index].updateState(.empty)
+            }
+        }
+    }
+    
+    @discardableResult
+    private func populateMatrixLine(_ lineType: LineType, at index: Int, with states: [Tile.State]) -> [Tile] {
+        var tiles = [Tile]()
+        switch lineType {
+        case .row:
+            for column in 0..<columnCount {
+                var tile = Tile(
+                    state: states[column],
+                    position: (row: index, column: column))
+                matrix[index][column] = tile
+                tiles.append(tile)
+            }
+        case .column:
+            for row in 0..<rowCount {
+                let tile = Tile(
+                    state: states[row],
+                    position: (row: row, column: index))
+                matrix[row][index] = tile
+                tiles.append(tile)
+            }
+        }
+        
+        return tiles
     }
 
     // MARK: Helpers
