@@ -16,8 +16,8 @@
 
 ### V0.2 The Gameloop
 - [x] Row Clear
-- [ ] Row Regen
-- [x] Row Clear Animations
+- [x] Row Regen
+- [ ] Row Clear Animations
 - [x] Multi Clear
 - [ ] Score System
 - [ ] Menu + Game Start Loop Event
@@ -76,6 +76,10 @@
 - [ ] Daily Challenges
 - [ ] Player leveling
 - [ ] nightmare nightmare nightmare
+
+### v1.3 More ways to play
+- [ ] Zen Mode
+- [ ] Levels
 
 ## Post Release Ideas
 - Dark Mode as Day/Night Cycle
