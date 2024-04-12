@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A1075A1A2BC9379400824252 /* Comfortaa-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A12C51082BC933C500ED2369 /* Comfortaa-Bold.ttf */; };
+		A1075A1B2BC9379400824252 /* Nunito-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A7A2BC9352900ACEF58 /* Nunito-Bold.ttf */; };
+		A1075A1C2BC9379400824252 /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A7B2BC9353400ACEF58 /* Nunito-ExtraBold.ttf */; };
+		A1075A1D2BC9379400824252 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A792BC9351800ACEF58 /* Quicksand-Bold.ttf */; };
+		A1075A1E2BC9379400824252 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */; };
 		A114E0582BBB6F2C00DEA716 /* Silme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E0572BBB6F2C00DEA716 /* Silme.swift */; };
 		A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */; };
 		A114E05D2BBB9EE800DEA716 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05C2BBB9EE800DEA716 /* GameManager.swift */; };
@@ -21,7 +26,7 @@
 		A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */; };
 		A14C5EF22BB916A5007C39F4 /* SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */; };
 		A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBA9D2BBCCE2E00AE2C94 /* GameState.swift */; };
-		A18DBAA02BBCCE6800AE2C94 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBA9F2BBCCE6800AE2C94 /* Constants.swift */; };
+		A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */; };
 		A18DBAA22BBCCEB700AE2C94 /* GameManagerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAA12BBCCEB700AE2C94 /* GameManagerFactory.swift */; };
 		A18DBAA42BBCCFC700AE2C94 /* BoardVisualizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAA32BBCCFC700AE2C94 /* BoardVisualizer.swift */; };
 		A18DBAA62BBCCFDD00AE2C94 /* BoardVisualizing.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAA52BBCCFDD00AE2C94 /* BoardVisualizing.swift */; };
@@ -32,6 +37,8 @@
 		A18DBAB32BC367A100AE2C94 /* LineCompletionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */; };
 		A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAB42BC4E9AF00AE2C94 /* Array.swift */; };
 		A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBABA2BC7613600AE2C94 /* BoardVisualizerError.swift */; };
+		A18DBABD2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBABC2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift */; };
+		A18DBABF2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBABE2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,6 +46,12 @@
 		A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalMovement.swift; sourceTree = "<group>"; };
 		A114E05C2BBB9EE800DEA716 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
 		A114E0602BBBA58100DEA716 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		A1150A792BC9351800ACEF58 /* Quicksand-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Quicksand-Bold.ttf"; sourceTree = "<group>"; };
+		A1150A7A2BC9352900ACEF58 /* Nunito-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Bold.ttf"; sourceTree = "<group>"; };
+		A1150A7B2BC9353400ACEF58 /* Nunito-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-ExtraBold.ttf"; sourceTree = "<group>"; };
+		A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Black.ttf"; sourceTree = "<group>"; };
+		A12C51052BC92A7D00ED2369 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A12C51082BC933C500ED2369 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
 		A134E8C12BB283C20027EB09 /* BarrelGameSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelGameSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelGameApp.swift; sourceTree = "<group>"; };
 		A134E8C62BB283C20027EB09 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -50,7 +63,7 @@
 		A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimeGameScene.swift; sourceTree = "<group>"; };
 		A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSpriteNode.swift; sourceTree = "<group>"; };
 		A18DBA9D2BBCCE2E00AE2C94 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
-		A18DBA9F2BBCCE6800AE2C94 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
 		A18DBAA12BBCCEB700AE2C94 /* GameManagerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManagerFactory.swift; sourceTree = "<group>"; };
 		A18DBAA32BBCCFC700AE2C94 /* BoardVisualizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardVisualizer.swift; sourceTree = "<group>"; };
 		A18DBAA52BBCCFDD00AE2C94 /* BoardVisualizing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardVisualizing.swift; sourceTree = "<group>"; };
@@ -61,6 +74,8 @@
 		A18DBAB22BC367A100AE2C94 /* LineCompletionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineCompletionInfo.swift; sourceTree = "<group>"; };
 		A18DBAB42BC4E9AF00AE2C94 /* Array.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Array.swift; sourceTree = "<group>"; };
 		A18DBABA2BC7613600AE2C94 /* BoardVisualizerError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardVisualizerError.swift; sourceTree = "<group>"; };
+		A18DBABC2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDimensionalButtonStyle.swift; sourceTree = "<group>"; };
+		A18DBABE2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeumorphicButtonStyle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +138,7 @@
 		A134E8C32BB283C20027EB09 /* BarrelGameSwiftUI */ = {
 			isa = PBXGroup;
 			children = (
+				A12C51052BC92A7D00ED2369 /* Info.plist */,
 				A18DBAAD2BBF574900AE2C94 /* Components */,
 				A18DBAAA2BBF537500AE2C94 /* Config */,
 				A114E05E2BBB9F4200DEA716 /* Board */,
@@ -131,7 +147,6 @@
 				A114E05F2BBBA55900DEA716 /* Services */,
 				A114E0592BBB700500DEA716 /* Protocols */,
 				A14C5EF02BB91696007C39F4 /* Extensions */,
-				A134E8C62BB283C20027EB09 /* ContentView.swift */,
 			);
 			path = BarrelGameSwiftUI;
 			sourceTree = "<group>";
@@ -178,8 +193,9 @@
 		A18DBAAA2BBF537500AE2C94 /* Config */ = {
 			isa = PBXGroup;
 			children = (
-				A18DBA9F2BBCCE6800AE2C94 /* Constants.swift */,
+				A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */,
 				A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */,
+				A134E8C62BB283C20027EB09 /* ContentView.swift */,
 				A134E8C82BB283C30027EB09 /* Assets.xcassets */,
 				A134E8CA2BB283C30027EB09 /* Preview Content */,
 			);
@@ -189,9 +205,24 @@
 		A18DBAAD2BBF574900AE2C94 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A18DBAC02BC925B900AE2C94 /* Fonts */,
 				A18DBAAE2BBF575700AE2C94 /* SKButton.swift */,
+				A18DBABC2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift */,
+				A18DBABE2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		A18DBAC02BC925B900AE2C94 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A12C51082BC933C500ED2369 /* Comfortaa-Bold.ttf */,
+				A1150A792BC9351800ACEF58 /* Quicksand-Bold.ttf */,
+				A1150A7A2BC9352900ACEF58 /* Nunito-Bold.ttf */,
+				A1150A7B2BC9353400ACEF58 /* Nunito-ExtraBold.ttf */,
+				A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,6 +284,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A134E8CC2BB283C30027EB09 /* Preview Assets.xcassets in Resources */,
+				A1075A1A2BC9379400824252 /* Comfortaa-Bold.ttf in Resources */,
+				A1075A1B2BC9379400824252 /* Nunito-Bold.ttf in Resources */,
+				A1075A1C2BC9379400824252 /* Nunito-ExtraBold.ttf in Resources */,
+				A1075A1D2BC9379400824252 /* Quicksand-Bold.ttf in Resources */,
+				A1075A1E2BC9379400824252 /* Nunito-Black.ttf in Resources */,
 				A134E8C92BB283C30027EB09 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,15 +313,17 @@
 				A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */,
 				A114E0582BBB6F2C00DEA716 /* Silme.swift in Sources */,
 				A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */,
-				A18DBAA02BBCCE6800AE2C94 /* Constants.swift in Sources */,
+				A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */,
 				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
 				A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */,
 				A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */,
 				A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */,
 				A18DBAA62BBCCFDD00AE2C94 /* BoardVisualizing.swift in Sources */,
+				A18DBABD2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift in Sources */,
 				A134E8D92BB780DD0027EB09 /* Tile.swift in Sources */,
 				A18DBAA82BBE414F00AE2C94 /* CGRect.swift in Sources */,
+				A18DBABF2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift in Sources */,
 				A134E8C52BB283C20027EB09 /* BarrelGameApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -423,6 +461,7 @@
 				DEVELOPMENT_TEAM = DCLHR77W8M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BarrelGameSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -453,6 +492,7 @@
 				DEVELOPMENT_TEAM = DCLHR77W8M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = BarrelGameSwiftUI/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
