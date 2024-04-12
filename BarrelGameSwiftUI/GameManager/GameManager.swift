@@ -21,9 +21,7 @@ class GameManager {
     private var scene: SlimeGameScene
     private let board: Board
     private var boardVisualizer: BoardVisualizing
-    
-    private var boardCenter: CGPoint?
-    
+
     // MARK: Initialization
     
     init(board: Board, scene: SlimeGameScene, boardVisualizer: BoardVisualizing) {
@@ -72,7 +70,8 @@ class GameManager {
         logger.info("handleEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
-            self.boardCenter = center
+            boardVisualizer.setup(for: center)
+            boardVisualizer.startMenuSequence()
         case .boardVisualizationComplete(let slimes):
             scene.inject(slimeMatrix: slimes)
             state.send(.ready)
@@ -106,11 +105,8 @@ class GameManager {
     
     private func initializeGame() {
         logger.info("initializeGame")
-
-        guard let center = boardCenter else { return }
-
         board.generateGameReadyBoard()
-        boardVisualizer.create(for: board, center: center)
+        boardVisualizer.createSlimes(for: board)
     }
     
     // MARK: Public

@@ -13,14 +13,22 @@ import Combine
 protocol BoardVisualizing {
     /// Informs the `GameManager` of  `GameEvent`s
     var events: PassthroughSubject<GameEvent, Never> { get set }
+    
+    
+    /// Setup board positions and prepare for create
+    /// - Parameter center: Used to configure positions
+    func setup(for center: CGPoint)
+    
+    
+    /// A simple animation of slimes moving to play on the menu
+    func startMenuSequence()
 
     /// Create and populate the starting matrix of slimes
     /// Set their positions appropriately to be scene ready
     /// Inform the GameManager when done
     /// - Parameters:
     ///   - board: The data model for generating slimes
-    ///   - center: The center point to base the grid on
-    func create(for board: Board, center: CGPoint)
+    func createSlimes(for board: Board)
 
     /// Move all slimes in a given row or column
     /// - Parameters:

@@ -21,4 +21,17 @@ enum Direction: String, CaseIterable {
     var isHorizontal: Bool {
         return self == .left || self == .right
     }
+    
+    public mutating func flip() {
+        switch self {
+        case .up:
+            self = .down
+        case .down:
+            self = .up
+        case .left:
+            self = .right
+        case .right:
+            self = .left
+        }
+    }
 }
