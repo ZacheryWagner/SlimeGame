@@ -22,6 +22,8 @@ class GameManager {
     private let board: Board
     private var boardVisualizer: BoardVisualizing
     
+    private var boardCenter: CGPoint?
+    
     // MARK: Initialization
     
     init(board: Board, scene: SlimeGameScene, boardVisualizer: BoardVisualizing) {
@@ -35,13 +37,6 @@ class GameManager {
     
         setupEvents()
         setupStateSubscriptions()
-        initializeGame()
-    }
-    
-    private func initializeGame() {
-        logger.info("initializeGame")
-        
-        board.generateGameReadyBoard()
     }
 
     private func setupEvents() {
@@ -77,8 +72,7 @@ class GameManager {
         logger.info("handleEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
-            board.generateGameReadyBoard()
-            boardVisualizer.create(for: board, center: center)
+            self.boardCenter = center
         case .boardVisualizationComplete(let slimes):
             scene.inject(slimeMatrix: slimes)
             state.send(.ready)
@@ -92,7 +86,7 @@ class GameManager {
         case .lineCompleted(let completion):
             boardVisualizer.handleLineCompletion(completion)
         case .slimesFinishedDespawning(let completion):
-            var lineRegenInfo = board.generateNewLine(for: completion)
+            let lineRegenInfo = board.generateNewLine(for: completion)
             boardVisualizer.generateNewSlimes(from: lineRegenInfo)
         case .newSlimesPrepared(let slimes):
             scene.inject(slimes: slimes)
@@ -103,20 +97,33 @@ class GameManager {
         guard state.value != newState else { return }
         state.send(newState)
     }
-    
+
     // MARK: Game
     
     private func start() {
         guard state.value == .ready else { return }
     }
     
+    private func initializeGame() {
+        logger.info("initializeGame")
+
+        guard let center = boardCenter else { return }
+
+        board.generateGameReadyBoard()
+        boardVisualizer.create(for: board, center: center)
+    }
+    
     // MARK: Public
     
-    func getSpriteView() -> some View {
+    public func playButtonTapped() {
+        initializeGame()
+    }
+    
+    public func getSpriteView() -> some View {
         return SpriteView(scene: scene).ignoresSafeArea()
     }
     
-    func configureSceneSize(size: CGSize) {
+    public func configureSceneSize(size: CGSize) {
         scene.size = size
     }
 }
