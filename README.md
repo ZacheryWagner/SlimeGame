@@ -20,7 +20,7 @@
 - [ ] Row Clear Animations
 - [x] Multi Clear
 - [ ] Score System
-- [ ] Menu + Game Start Loop Event
+- [x] Menu + Game Start Loop Event
 - [ ] Time System + Game End Loop Event
 
 ### V0.3 Sound & Devops
