@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Constants {
+struct Constants {
 
     /// Number of slime rows
     static let rows: Int = 6
@@ -21,9 +21,12 @@ class Constants {
     /// Pixels between slimes
     static let slimePadding: CGFloat = pixelWidth * 1
     
-    static let slimeSlideDuration: CGFloat = 0.15
+    static let slimeMoveBounceScale: CGFloat = 1.2
+    static let slimeSpawnBounceScale: CGFloat = 1.25
     
-    static let slimeRemovalDuration: CGFloat = 0.35
+    static let slimeMoveDuration: CGFloat = 0.15
+    static let slimeSpawnDuration: CGFloat = 0.4
+    static let slimeDespawnDuration: CGFloat = 0.35
     
     /// These need to go away once I get corrected assets
     static let playableAreaSize = CGSize(width: 310, height: 404)

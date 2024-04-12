@@ -60,9 +60,8 @@ extension SlimeGameScene {
     public func setupDebugUI() {
         addChild(generateBoardButton)
         addChild(debugLabel)
-        
-//        addChild(debugCenterMarker)
-//        drawPlayableArea()
+        addChild(debugCenterMarker)
+        drawPlayableArea()
     }
     
     private func drawPlayableArea() {

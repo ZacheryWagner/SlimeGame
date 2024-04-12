@@ -72,8 +72,7 @@ class SlimeGameScene: SKScene {
         setupBackground()
         setupForeground()
         setupGamebox()
-        
-        setupDebugUI()
+//        setupDebugUI()
         
         events.send(.playableAreaSetupComplete(
             playableArea.frame,
@@ -125,8 +124,8 @@ class SlimeGameScene: SKScene {
         slime.setScale(0)
         addChild(slime)
         
-        let scaleUpAction = SKAction.scale(to: 1.25, duration: 0.25)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: 0.15)
+        let scaleUpAction = SKAction.scale(to: Constants.slimeSpawnBounceScale, duration: Constants.slimeSpawnDuration * 0.6)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: Constants.slimeSpawnDuration * 0.4)
         
         // Increment the delay for each slime based on its position
         let delayAction = SKAction.wait(forDuration: 0.05 * delayIncrement)
