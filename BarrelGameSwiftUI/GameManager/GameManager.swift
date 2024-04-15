@@ -15,26 +15,43 @@ import Combine
 class GameManager {
     private let logger = Logger(source: GameManager.self)
     
+    // MARK: Combine
+    
     private var state = CurrentValueSubject<GameState, Never>(.uninitialized)
+    
+    var scorePublisher: AnyPublisher<Int, Never> {
+        scoreManager.scoreSubject.eraseToAnyPublisher()
+    }
+    
+    var timePublisher: AnyPublisher<TimeInterval, Never> {
+        timeManager.timeSubject.eraseToAnyPublisher()
+    }
+    
     private var cancellables = Set<AnyCancellable>()
     
+    // MARK: Dependencies
+    
+    private var scoreManager: ScoreManager
+    private var timeManager: TimeManager
     private var scene: SlimeGameScene
     private let board: Board
     private var boardVisualizer: BoardVisualizing
 
     // MARK: Initialization
     
-    init(board: Board, scene: SlimeGameScene, boardVisualizer: BoardVisualizing) {
-        self.board = board
+    init(scene: SlimeGameScene, board: Board, boardVisualizer: BoardVisualizing, scoreManager: ScoreManager, timeManager: TimeManager) {
         self.scene = scene
+        self.board = board
         self.boardVisualizer = boardVisualizer
+        self.scoreManager = scoreManager
+        self.timeManager = timeManager
         
         self.scene.scaleMode = .aspectFill
-        
+
         state.send(.loading)
     
         setupEvents()
-        setupStateSubscriptions()
+        setupStateSubscription()
     }
 
     private func setupEvents() {
@@ -42,14 +59,14 @@ class GameManager {
             .merge(with: boardVisualizer.events)
             .merge(with: board.events)
             .sink { [weak self] event in
-                self?.handleEvent(event)
+                self?.handleGameEvent(event)
             }
             .store(in: &cancellables)
     }
     
     // MARK: State Machine
     
-    private func setupStateSubscriptions() {
+    private func setupStateSubscription() {
         state
             .removeDuplicates()
             .sink { [weak self] newState in
@@ -66,12 +83,12 @@ class GameManager {
             .store(in: &cancellables)
     }
 
-    private func handleEvent(_ event: GameEvent) {
-        logger.info("handleEvent: \(event.localizedDescription)")
+    private func handleGameEvent(_ event: GameEvent) {
+        logger.info("handleGameEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
             boardVisualizer.setup(for: center)
-            boardVisualizer.startMenuSequence()
+//            boardVisualizer.startMenuSequence()
         case .boardVisualizationComplete(let slimes):
             scene.inject(slimeMatrix: slimes)
             state.send(.ready)
@@ -82,8 +99,10 @@ class GameManager {
                 index: index)
         case .slimesFinishedMovement:
             board.checkAndHandleLineCompletion()
-        case .lineCompleted(let completion):
-            boardVisualizer.handleLineCompletion(completion)
+        case .linesCompleted(let completions):
+            boardVisualizer.handleLineCompletions(completions)
+            scoreManager.addScoreForLineCompletion(comboLevel: 0, lineClears: completions.count)
+            timeManager.addTimeForLineCompletion()
         case .slimesFinishedDespawning(let completion):
             let lineRegenInfo = board.generateNewLine(for: completion)
             boardVisualizer.generateNewSlimes(from: lineRegenInfo)
@@ -115,8 +134,8 @@ class GameManager {
         initializeGame()
     }
     
-    public func getSpriteView() -> some View {
-        return SpriteView(scene: scene).ignoresSafeArea()
+    public func getScene() -> SlimeGameScene {
+        return scene
     }
     
     public func configureSceneSize(size: CGSize) {

@@ -31,4 +31,6 @@ struct Constants {
     /// These need to go away once I get corrected assets
     static let playableAreaSize = CGSize(width: 310, height: 404)
     static let playableAreaVerticalOffset: CGFloat = 20
+    
+    static let startTime: TimeInterval = 60
 }

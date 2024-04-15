@@ -9,9 +9,17 @@ import Foundation
 
 class GameManagerFactory {
     static func make() -> GameManager {
+        let scoreManager = ScoreManager()
+        let timeManager = TimeManager()
         let board = Board(rows: Constants.rows, columns: Constants.columns)
         let scene = SlimeGameScene()
         let boardVisualizer = BoardVisualizer()
-        return GameManager(board: board, scene: scene, boardVisualizer: boardVisualizer)
+        return GameManager(
+            scene: scene,
+            board: board,
+            boardVisualizer: boardVisualizer,
+            scoreManager: scoreManager,
+            timeManager: timeManager
+        )
     }
 }
