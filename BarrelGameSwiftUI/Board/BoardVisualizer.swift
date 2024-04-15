@@ -36,37 +36,66 @@ class BoardVisualizer: BoardVisualizing {
     private var startX: CGFloat = 0
     private var startY: CGFloat = 0
     private var center: CGPoint?
+    
+    private var isPlayingGame: Bool = false
+    private var animationTimer: Timer?
+    private var currentDirection: Direction = .down
         
     init() {}
     
     // MARK: BoardVisualizing
+    
+    public func setup(for center: CGPoint) {
+        self.center = center
+        removeAllSlimesFromParent()
+        calculateStartPosition()
+        generatePositionDictionary()
+    }
+    
+    public func startMenuSequence() {
+        slimeMatrix = Array(repeating: Array(repeating: nil, count: Constants.columns), count: Constants.rows)
+        let gabbi = Slime(genus: .red)
+        let noah = Slime(genus: .red)
+        let lastColumn = Constants.columns-1
+        slimeMatrix[0][lastColumn] = gabbi
+        slimeMatrix[1][lastColumn] = noah
+        
+        gabbi.position = getPositionFor(row: 0, column: lastColumn)!
+        noah.position = getPositionFor(row: 1, column: lastColumn)!
+        
+        events.send(.newSlimesPrepared([gabbi, noah]))
+
+        startAnimatingMenuSlimes(column: lastColumn)
+    }
+    
+    // Starts the animation loop
+    func startAnimatingMenuSlimes(column: Int) {
+        // Invalidate existing timer if running
+        animationTimer?.invalidate()
+
+        // Initialize the currentDirection if you want to start with a specific pattern
+        currentDirection = .down
+
+        // Schedule a new repeating timer
+        animationTimer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.animateSlimeMovementInColumn(column, direction: self.currentDirection)
+            currentDirection.flip()
+        }
+    }
 
     /// Create and populate the starting matrix of slimes
     /// Set their positions appropriately to be scene ready
     /// Inform the GameManager when done
     /// - Parameters:
     ///   - board: The data model for generating slimes
-    ///   - center: The center point to base the grid on
-    public func create(for board: Board, center: CGPoint) {
-        // Remove slimes before generating a new board.
-        // This is currently only relevant for debug mode.
-        for column in slimeMatrix {
-            for slime in column {
-                slime?.removeFromParent()
-            }
-        }
+    public func createSlimes(for board: Board) {
+        isPlayingGame = true
+        removeAllSlimesFromParent()
+        animationTimer?.invalidate()
 
-        self.center = center
-
-        // Layout all possible slime positions
-        setStartPosition()
-        generatePositionDictionary()
-
-        // Clear existing slimes and set new ones based on the board state
         slimeMatrix = Array(repeating: Array(repeating: nil, count: Constants.columns), count: Constants.rows)
         setSlimes(for: board)
-
-        // Update delegate or scene with the newly positioned slimes
         events.send(GameEvent.boardVisualizationComplete(slimeMatrix))
     }
 
@@ -85,16 +114,14 @@ class BoardVisualizer: BoardVisualizing {
         }
     }
     
-    public func handleLineCompletion(_ completion: LineCompletionInfo) {
-        switch completion.lineType {
-        case .row:
-            animateAndRemoveSlimesInRow(at: completion.index, completion: { [weak self] in
-                self?.events.send(.slimesFinishedDespawning(completion))
-            })
-        case .column:
-            animateAndRemoveSlimesInColumn(at: completion.index, completion: { [weak self] in
-                self?.events.send(.slimesFinishedDespawning(completion))
-            })
+    
+    /// Handle slime removal both from the matrix and animations
+    /// Send a `slimesFinishedDespawning` when done.
+    ///
+    /// - Parameter completions: data model with completion details
+    public func handleLineCompletions(_ completions: [LineCompletionInfo]) {
+        for completion in completions {
+            handleLineCompletion(completion)
         }
     }
     
@@ -118,7 +145,7 @@ class BoardVisualizer: BoardVisualizing {
     // MARK: Initial Generation
     
     /// Calulates the first slimes start position based on `Center`
-    private func setStartPosition() {
+    private func calculateStartPosition() {
         guard let center = center else { return }
 
         // Calculate the total grid width and height to adjust positions accordingly
@@ -194,8 +221,11 @@ class BoardVisualizer: BoardVisualizing {
             if let newPosition = getPositionFor(row: row, column: targetColumn) {
                 slime.updateTexture(in: direction)
                 animateSlimeMovement(slime, to: newPosition) { [weak self] in
+                    guard let self = self else { return }
                     slime.updateTextureToIdle()
-                    self?.animationDidComplete()
+                    if self.isPlayingGame {
+                        self.animationDidComplete()
+                    }
                 }
             }
         }
@@ -225,8 +255,11 @@ class BoardVisualizer: BoardVisualizing {
             if let newPosition = getPositionFor(row: targetRow, column: column) {
                 slime.updateTexture(in: direction)
                 animateSlimeMovement(slime, to: newPosition) { [weak self] in
+                    guard let self = self else { return }
                     slime.updateTextureToIdle()
-                    self?.animationDidComplete()
+                    if self.isPlayingGame {
+                        self.animationDidComplete()
+                    } 
                 }
             }
         }
@@ -236,18 +269,19 @@ class BoardVisualizer: BoardVisualizing {
             slimeMatrix[rowIndex][column] = newColumn[rowIndex]
         }
     }
-    
+
     private func animateSlimeMovement(_ slime: Slime, to position: CGPoint, withCompletion completion: @escaping () -> Void) {
-        let moveAction = SKAction.move(to: position, duration: Constants.slimeSlideDuration)
-        let scaleUpAction = SKAction.scale(to: 1.2, duration: Constants.slimeSlideDuration * 0.5)
-        let scaleDownAction = SKAction.scale(to: 1.0, duration: Constants.slimeSlideDuration * 0.5)
+        let slideDuration = isPlayingGame ? Constants.slimeMoveDuration : 3
+        let moveAction = SKAction.move(to: position, duration: slideDuration)
+        let scaleUpAction = SKAction.scale(to: Constants.slimeMoveBounceScale, duration: slideDuration * 0.5)
+        let scaleDownAction = SKAction.scale(to: 1.0, duration: slideDuration * 0.5)
         let bounceAction = SKAction.sequence([scaleUpAction, scaleDownAction])
         let groupAction = SKAction.group([moveAction, bounceAction])
         groupAction.timingMode = .easeOut
         
         slime.run(groupAction, completion: completion)
     }
-    
+
     private func prepareForAnimation(with count: Int) {
         animationsCount = count
         animationsCompleted = 0
@@ -262,7 +296,20 @@ class BoardVisualizer: BoardVisualizing {
         }
     }
     
-    // MARK: Removal
+    // MARK: Completion & Removal
+    
+    private func handleLineCompletion(_ completion: LineCompletionInfo) {
+        switch completion.lineType {
+        case .row:
+            animateAndRemoveSlimesInRow(at: completion.index, completion: { [weak self] in
+                self?.events.send(.slimesFinishedDespawning(completion))
+            })
+        case .column:
+            animateAndRemoveSlimesInColumn(at: completion.index, completion: { [weak self] in
+                self?.events.send(.slimesFinishedDespawning(completion))
+            })
+        }
+    }
     
     private func animateAndRemoveSlimesInRow(at rowIndex: Int, completion: @escaping () -> Void) {
         guard rowIndex < slimeMatrix.count else { return }
@@ -273,12 +320,12 @@ class BoardVisualizer: BoardVisualizing {
             guard let slime = slime else { continue }
             animationGroup.enter()
 
-            animateRemoval(of: slime, atRow: rowIndex, column: columnIndex) {
+            animateRemoval(of: slime) {
                 self.slimeMatrix[rowIndex][columnIndex] = nil
                 animationGroup.leave()
             }
         }
-        
+
         animationGroup.notify(queue: .main, execute: completion)
     }
 
@@ -291,7 +338,7 @@ class BoardVisualizer: BoardVisualizing {
             guard let slime = slimeMatrix[rowIndex][columnIndex] else { continue }
             animationGroup.enter()
             
-            animateRemoval(of: slime, atRow: rowIndex, column: columnIndex) {
+            animateRemoval(of: slime) {
                 self.slimeMatrix[rowIndex][columnIndex] = nil
                 animationGroup.leave()
             }
@@ -301,10 +348,10 @@ class BoardVisualizer: BoardVisualizing {
     }
 
     
-    private func animateRemoval(of slime: Slime, atRow rowIndex: Int, column columnIndex: Int, completion: @escaping () -> Void) {
+    private func animateRemoval(of slime: Slime, completion: @escaping () -> Void) {
         // Configure the bounce and shrink actions
-        let scaleUpAction = SKAction.scale(to: 1.1, duration: Constants.slimeRemovalDuration/3)
-        let scaleDownAction = SKAction.scale(to: 0, duration: (Constants.slimeRemovalDuration/3) * 2)
+        let scaleUpAction = SKAction.scale(to: 1.1, duration: Constants.slimeDespawnDuration/3)
+        let scaleDownAction = SKAction.scale(to: 0, duration: (Constants.slimeDespawnDuration/3) * 2)
         scaleDownAction.timingMode = .easeIn
         
         // Create a sequence for the bounce effect followed by shrink
@@ -316,7 +363,16 @@ class BoardVisualizer: BoardVisualizing {
         }
     }
     
-    // MARK: Regen
+    private func removeAllSlimesFromParent() {
+        for column in slimeMatrix {
+            for slime in column {
+                guard let slime = slime else { return }
+                animateRemoval(of: slime) {}
+            }
+        }
+    }
+    
+    // MARK: Regeneration
     
     private func createSlime(from tile: Tile) -> Slime? {
         guard tile.state.isOccupied else { return nil }
