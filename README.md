@@ -3,85 +3,106 @@
 
 ![image](https://github.com/ZacheryWagner/SlimeGame/assets/25253120/0b530155-1d6b-416c-ad77-b9a904c41dc7)
 
-## Development Timeline
-### V0.1 The Engine
-- [x] Matrix Logic (a 2D array data representation of the board with positions and states)
-- [x] Resizable and Randomized Board Generation
-- [x] Rendering and Scene Setup
-- [x] Architecture: State Machine, Event System, Composition
-- [x] Logging
-- [x] Data Binding Slime Sprites to Matrix
-- [x] Gesture Recognition (Detect swipe, translate direction and row/column)
-- [x] Slime Movement
+# Development Timeline
 
-### V0.2 The Gameloop
-- [x] Row Clear
-- [x] Row Regen
-- [ ] Row Clear Animations
-- [x] Multi Clear
-- [ ] Score System
-- [x] Menu + Game Start Loop Event
-- [ ] Time System + Game End Loop Event
+## Pre-Release
+
+### V0.1 The Engine
+
+- [x]  Matrix Logic (a 2D array data representation of the board with positions and states)
+- [x]  Resizable and Randomized Board Generation
+- [x]  Rendering and Scene Setup
+- [x]  Architecture: State Machine, Event System, Composition
+- [x]  Logging
+- [x]  Data Binding Slime Sprites to Matrix
+- [x]  Gesture Recognition (Detect swipe, translate direction and row/column)
+- [x]  Slime Movement
+
+### V0.2 The Game Loop
+
+- [x]  Row Clear
+- [x]  Row Regen
+- [ ]  Row Clear Animations *(Waiting on Design)*
+- [x]  Multi Clear
+- [x]  Score System
+- [x]  Menu + Game Start Loop Event
+- [x]  Time System + Game End Loop Event
+- [ ]  Polish
 
 ### V0.3 Sound & Devops
-- [ ] Basic SFX
-- [ ] Background Music
-- [ ] High Score (UserDefaults Integration)
-- [ ] Error Tracking (Sentry Integration)
-- [ ] Playtesting (TestFlight Integration)
+
+- [ ]  Basic SFX
+- [ ]  Background Music
+- [ ]  High Score (UserDefaults Integration)
+- [ ]  Error Tracking (Sentry Integration)
+- [ ]  Playtesting (TestFlight Integration)
 
 ### V0.4 More Time More Slime
-- [ ] Incremental Time System
-- [ ] More Slime Colors
-- [ ] Raindbow Slime
-- [ ] Scene Polish and Animations
+
+- [ ]  Incremental Time System
+- [ ]  More Slime Colors
+- [ ]  Rainbow Slime
 
 ### V0.5 Combos & Music Randomization
-- [ ] Combo System
-- [ ] Intelligent Scoring
-- [ ] SFX & Music Improvements
+
+- [ ]  Combo System
+- [ ]  Intelligent Scoring
+- [ ]  SFX & Music Improvements
+- [ ]  Scene Polish & Animations
 
 ### V0.6 Menus & Device Support
-- [ ] Tutorial Sequence
-- [ ] Better Menues
-- [ ] Sound Settings
-- [ ] Ipad Support & MultiDevice Scaling
-- [ ] Game Center (stop gap for leaderboards)
 
-### V0.7 Missions & Rewards
-- [ ] Reward System
-- [ ] Missions
-- [ ] Achievements
+- [ ]  Tutorial Sequence
+- [ ]  Better Menus
+- [ ]  Sound Settings
+- [ ]  iPad Support & Multi-Device Scaling
+- [ ]  Game Center (stop gap for leaderboards)
+
+### V0.7 Rewards & Achievements
+
+- [ ]  Firebase Integration
+- [ ]  Reward System
+- [ ]  Achievements
 
 ### V0.8 Shop
-- [ ] Assett Shop
-- [ ] Template System (Swappable Assets)
-- [ ] Monetization
+
+- [ ]  Asset Shop
+- [ ]  Template System (Swappable Assets)
+- [ ]  Monetization
 
 ### V0.9 Scene Life
-- [ ] Scene Animation Cycle System
-- [ ] Add tons of life to scenes
-- [ ] Finalize assets and animations
+
+- [ ]  Scene Animation Cycle System
+- [ ]  Add tons of life to scenes
+- [ ]  Finalize assets and animations
 
 ### V1.0 Release
-- [ ] Analytics (Firebase or Amplitude Integration)
-- [ ] Polish
-- [ ] Bug Fixes
+
+- [ ]  Language Localization
+    - [ ]  Japanese
+    - [ ]  Korean
+    - [ ]  Hindi
+    - [ ]  Mandarin
+    - [ ]  German
+- [ ]  Analytics (Firebase or Amplitude Integration)
+- [ ]  Polish
+- [ ]  Bug Fixes
+
+# Post-Release
 
 ### V1.1 Hotfix
-- [ ] Bug Fixes
- 
-### v1.2 We need a backend
-- [ ] Localized leaderboards
-- [ ] Daily Challenges
-- [ ] Player leveling
-- [ ] nightmare nightmare nightmare
 
-### v1.3 More ways to play
-- [ ] Zen Mode
-- [ ] Levels
+- [ ]  Bug Fixes
+
+### v1.2 We need a backend
+
+- [ ]  Localized leaderboards
+- [ ]  Missions & Player Levels
+- [ ]  Daily Challenges
+- [ ]  nightmare nightmare nightmare
 
 ## Post Release Ideas
+
 - Dark Mode as Day/Night Cycle
 
 ## Credits
