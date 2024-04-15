@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  PlayView.swift
 //  BarrelGameSwiftUI
 //
 //  Created by Zachery Wagner on 3/25/24.
@@ -28,13 +28,11 @@ struct PlayView: View {
     var body: some View {
         ZStack {
             gameView()
-            if viewModel.isButtonsHidden {
-                mainUI()
-            }
+            overlayUI()
         }
         .onAppear {
             viewModel.configureGameScreen(size: UIScreen.main.bounds.size)
-            animateButtons()
+            animateMenuButtonsIn()
         }
     }
 
@@ -47,7 +45,29 @@ struct PlayView: View {
         }
     }
     
-    private func mainUI() -> some View {
+    private func overlayUI() -> some View {
+        ZStack {
+            // Score and time displays positioned independently at the top.
+            VStack {
+                HStack {
+                    scoreDisplay()
+                        .padding(.leading)
+                    Spacer()
+                    timeDisplay()
+                        .padding(.trailing)
+                }
+                Spacer()
+            }
+            
+            // Game buttons positioned independently in the center.
+            if viewModel.isButtonsHidden {
+                menuButtons()
+                    .position(x: UIScreen.main.bounds.midX, y: UIScreen.main.bounds.midY + offset)
+            }
+        }
+    }
+    
+    private func menuButtons() -> some View {
         let buttonHeight: CGFloat = 80
         let buttonWidth: CGFloat = 200
         let buttonStyle = ThreeDimensionalButtonStyle(
@@ -57,7 +77,7 @@ struct PlayView: View {
 
         return VStack(spacing: 30) {
             Button("Play") {
-                animateButtonsOut()
+                animateMenuButtonsOut()
                 viewModel.playButtonTapped()
             }
             .buttonStyle(buttonStyle)
@@ -76,10 +96,27 @@ struct PlayView: View {
         }
         .offset(y: offset)
     }
+    
+    private func scoreDisplay() -> some View {
+        Text("Score: \(viewModel.score)")
+            .font(.custom("Nunito-Black", size: viewModel.hudFontSize))
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+            .shadow(radius: 6)
+    }
+
+    private func timeDisplay() -> some View {
+        Text("\(viewModel.remainingTime)")
+            .font(.custom("Nunito-Black", size: viewModel.hudFontSize))
+            .fontWeight(.bold)
+            .foregroundColor(.white)
+            .shadow(radius: 6)
+
+    }
 
     // MARK: Animations
 
-    private func animateButtons() {
+    private func animateMenuButtonsIn() {
         withAnimation(.easeIn(duration: 0.25)) {
             viewModel.scale = 1.2
         }
@@ -88,7 +125,7 @@ struct PlayView: View {
         }
     }
     
-    private func animateButtonsOut() {
+    private func animateMenuButtonsOut() {
         withAnimation(.easeOut(duration: 0.3)) {
             viewModel.scale = 0.0
         }

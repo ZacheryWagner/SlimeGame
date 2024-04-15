@@ -11,9 +11,11 @@ import SpriteKit
 
 class PlayViewModel: ObservableObject {
     @Published private(set) var score: Int = 0
-    @Published private(set) var remainingTime: TimeInterval = 60
+    @Published private(set) var remainingTime: TimeInterval = Constants.startTime
     @Published public var isButtonsHidden: Bool = true
     @Published public var scale: CGFloat = 0.0
+    
+    public private(set) var hudFontSize: CGFloat = 24
 
     private let gameManager: GameManager
     private var cancellables = Set<AnyCancellable>()

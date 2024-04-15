@@ -21,8 +21,8 @@
 		A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */; };
 		A114E05D2BBB9EE800DEA716 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05C2BBB9EE800DEA716 /* GameManager.swift */; };
 		A114E0612BBBA58100DEA716 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E0602BBBA58100DEA716 /* Logger.swift */; };
-		A134E8C52BB283C20027EB09 /* BarrelGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */; };
-		A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8C62BB283C20027EB09 /* ContentView.swift */; };
+		A134E8C52BB283C20027EB09 /* SlimelApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8C42BB283C20027EB09 /* SlimelApp.swift */; };
+		A134E8C72BB283C20027EB09 /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8C62BB283C20027EB09 /* PlayView.swift */; };
 		A134E8C92BB283C30027EB09 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A134E8C82BB283C30027EB09 /* Assets.xcassets */; };
 		A134E8CC2BB283C30027EB09 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A134E8CB2BB283C30027EB09 /* Preview Assets.xcassets */; };
 		A134E8D72BB29EA60027EB09 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = A134E8D62BB29EA60027EB09 /* Board.swift */; };
@@ -62,9 +62,9 @@
 		A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Black.ttf"; sourceTree = "<group>"; };
 		A12C51052BC92A7D00ED2369 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A12C51082BC933C500ED2369 /* Comfortaa-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Comfortaa-Bold.ttf"; sourceTree = "<group>"; };
-		A134E8C12BB283C20027EB09 /* BarrelGameSwiftUI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BarrelGameSwiftUI.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarrelGameApp.swift; sourceTree = "<group>"; };
-		A134E8C62BB283C20027EB09 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A134E8C12BB283C20027EB09 /* Slimel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Slimel.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A134E8C42BB283C20027EB09 /* SlimelApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimelApp.swift; sourceTree = "<group>"; };
+		A134E8C62BB283C20027EB09 /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
 		A134E8C82BB283C30027EB09 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A134E8CB2BB283C30027EB09 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A134E8D62BB29EA60027EB09 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
@@ -132,10 +132,19 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		A13044782BCDE0050092A5BF /* Menus */ = {
+			isa = PBXGroup;
+			children = (
+				A134E8C62BB283C20027EB09 /* PlayView.swift */,
+				A1075A272BCCE3CD00824252 /* PlayViewModel.swift */,
+			);
+			path = Menus;
+			sourceTree = "<group>";
+		};
 		A134E8B82BB283C20027EB09 = {
 			isa = PBXGroup;
 			children = (
-				A134E8C32BB283C20027EB09 /* BarrelGameSwiftUI */,
+				A134E8C32BB283C20027EB09 /* Slimel */,
 				A134E8C22BB283C20027EB09 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,12 +152,12 @@
 		A134E8C22BB283C20027EB09 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A134E8C12BB283C20027EB09 /* BarrelGameSwiftUI.app */,
+				A134E8C12BB283C20027EB09 /* Slimel.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A134E8C32BB283C20027EB09 /* BarrelGameSwiftUI */ = {
+		A134E8C32BB283C20027EB09 /* Slimel */ = {
 			isa = PBXGroup;
 			children = (
 				A12C51052BC92A7D00ED2369 /* Info.plist */,
@@ -161,7 +170,7 @@
 				A114E0592BBB700500DEA716 /* Protocols */,
 				A14C5EF02BB91696007C39F4 /* Extensions */,
 			);
-			path = BarrelGameSwiftUI;
+			path = Slimel;
 			sourceTree = "<group>";
 		};
 		A134E8CA2BB283C30027EB09 /* Preview Content */ = {
@@ -208,9 +217,7 @@
 			children = (
 				A1075A252BCCDDDF00824252 /* ScoreConstants.swift */,
 				A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */,
-				A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */,
-				A134E8C62BB283C20027EB09 /* ContentView.swift */,
-				A1075A272BCCE3CD00824252 /* PlayViewModel.swift */,
+				A134E8C42BB283C20027EB09 /* SlimelApp.swift */,
 				A134E8C82BB283C30027EB09 /* Assets.xcassets */,
 				A134E8CA2BB283C30027EB09 /* Preview Content */,
 			);
@@ -220,6 +227,7 @@
 		A18DBAAD2BBF574900AE2C94 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				A13044782BCDE0050092A5BF /* Menus */,
 				A18DBAC02BC925B900AE2C94 /* Fonts */,
 				A18DBAAE2BBF575700AE2C94 /* SKButton.swift */,
 				A18DBABC2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift */,
@@ -243,9 +251,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A134E8C02BB283C20027EB09 /* BarrelGameSwiftUI */ = {
+		A134E8C02BB283C20027EB09 /* Slimel */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A134E8CF2BB283C30027EB09 /* Build configuration list for PBXNativeTarget "BarrelGameSwiftUI" */;
+			buildConfigurationList = A134E8CF2BB283C30027EB09 /* Build configuration list for PBXNativeTarget "Slimel" */;
 			buildPhases = (
 				A134E8BD2BB283C20027EB09 /* Sources */,
 				A134E8BE2BB283C20027EB09 /* Frameworks */,
@@ -255,9 +263,9 @@
 			);
 			dependencies = (
 			);
-			name = BarrelGameSwiftUI;
+			name = Slimel;
 			productName = BarrelGameSwiftUI;
-			productReference = A134E8C12BB283C20027EB09 /* BarrelGameSwiftUI.app */;
+			productReference = A134E8C12BB283C20027EB09 /* Slimel.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -275,7 +283,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A134E8BC2BB283C20027EB09 /* Build configuration list for PBXProject "BarrelGameSwiftUI" */;
+			buildConfigurationList = A134E8BC2BB283C20027EB09 /* Build configuration list for PBXProject "Slimel" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -288,7 +296,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A134E8C02BB283C20027EB09 /* BarrelGameSwiftUI */,
+				A134E8C02BB283C20027EB09 /* Slimel */,
 			);
 		};
 /* End PBXProject section */
@@ -334,7 +342,7 @@
 				A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */,
 				A1075A222BCCDD4E00824252 /* TimeManager.swift in Sources */,
 				A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */,
-				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
+				A134E8C72BB283C20027EB09 /* PlayView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
 				A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */,
 				A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */,
@@ -344,7 +352,7 @@
 				A134E8D92BB780DD0027EB09 /* Tile.swift in Sources */,
 				A18DBAA82BBE414F00AE2C94 /* CGRect.swift in Sources */,
 				A18DBABF2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift in Sources */,
-				A134E8C52BB283C20027EB09 /* BarrelGameApp.swift in Sources */,
+				A134E8C52BB283C20027EB09 /* SlimelApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,7 +543,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A134E8BC2BB283C20027EB09 /* Build configuration list for PBXProject "BarrelGameSwiftUI" */ = {
+		A134E8BC2BB283C20027EB09 /* Build configuration list for PBXProject "Slimel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A134E8CD2BB283C30027EB09 /* Debug */,
@@ -544,7 +552,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A134E8CF2BB283C30027EB09 /* Build configuration list for PBXNativeTarget "BarrelGameSwiftUI" */ = {
+		A134E8CF2BB283C30027EB09 /* Build configuration list for PBXNativeTarget "Slimel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A134E8D02BB283C30027EB09 /* Debug */,

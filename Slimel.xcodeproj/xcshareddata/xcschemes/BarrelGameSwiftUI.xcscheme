@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A134E8C02BB283C20027EB09"
-               BuildableName = "BarrelGameSwiftUI.app"
-               BlueprintName = "BarrelGameSwiftUI"
-               ReferencedContainer = "container:BarrelGameSwiftUI.xcodeproj">
+               BuildableName = "Slimel.app"
+               BlueprintName = "Slimel"
+               ReferencedContainer = "container:Slimel.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -45,9 +45,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A134E8C02BB283C20027EB09"
-            BuildableName = "BarrelGameSwiftUI.app"
-            BlueprintName = "BarrelGameSwiftUI"
-            ReferencedContainer = "container:BarrelGameSwiftUI.xcodeproj">
+            BuildableName = "Slimel.app"
+            BlueprintName = "Slimel"
+            ReferencedContainer = "container:Slimel.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -62,9 +62,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A134E8C02BB283C20027EB09"
-            BuildableName = "BarrelGameSwiftUI.app"
-            BlueprintName = "BarrelGameSwiftUI"
-            ReferencedContainer = "container:BarrelGameSwiftUI.xcodeproj">
+            BuildableName = "Slimel.app"
+            BlueprintName = "Slimel"
+            ReferencedContainer = "container:Slimel.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

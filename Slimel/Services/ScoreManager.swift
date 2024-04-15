@@ -24,10 +24,16 @@ class ScoreManager: ScoreTracking {
     func addScoreForLineCompletion(comboLevel: Int, lineClears: Int) {
         logger.info("addScoreForLineCompletion comboLevel: \(comboLevel), lineClears: \(lineClears)")
         let baseScorePerLine = ScoreConstants.standardScoreIncrement
-        let lineScore = baseScorePerLine + (lineClears * ScoreConstants.lineClearMultiplier) * baseScorePerLine
-        let comboScore = Double(lineScore) * (1 + Double(comboLevel - 1) * ScoreConstants.comboMultiplier)
-        
-        // The final score to add for this event
+
+        // Adjust line score calculation to account for multiple lines
+        let additionalLinesScore = (lineClears > 1) ? (lineClears - 1) * ScoreConstants.lineClearMultiplier * baseScorePerLine : 0
+        let lineScore = baseScorePerLine + additionalLinesScore
+
+        // Combo score should not apply if comboLevel is 0
+        let comboMultiplier = comboLevel > 0 ? (1 + Double(comboLevel - 1) * ScoreConstants.comboMultiplier) : 1.0
+
+        // Calculate final score to add
+        let comboScore = Double(lineScore) * comboMultiplier
         let scoreToAdd = Int(comboScore)
         
         // Increment total score

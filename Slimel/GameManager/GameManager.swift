@@ -52,6 +52,7 @@ class GameManager {
     
         setupEvents()
         setupStateSubscription()
+        subscribeToTimeManager()
     }
 
     private func setupEvents() {
@@ -60,6 +61,18 @@ class GameManager {
             .merge(with: board.events)
             .sink { [weak self] event in
                 self?.handleGameEvent(event)
+            }
+            .store(in: &cancellables)
+    }
+    
+    
+    // Subscribing to the timeManager's time updates
+    private func subscribeToTimeManager() {
+        timeManager.timeSubject
+            .sink { [weak self] timeLeft in
+                if timeLeft <= 0 {
+                    self?.end()
+                }
             }
             .store(in: &cancellables)
     }
@@ -118,14 +131,23 @@ class GameManager {
 
     // MARK: Game
     
-    private func start() {
-        guard state.value == .ready else { return }
-    }
-    
     private func initializeGame() {
         logger.info("initializeGame")
         board.generateGameReadyBoard()
         boardVisualizer.createSlimes(for: board)
+        start()
+    }
+    
+    private func start() {
+        guard state.value == .ready else { return }
+        timeManager.startTimer()
+    }
+    
+    
+    // Handling the end of the game
+    func end() {
+        logger.info("end")
+        state.send(.ended)
     }
     
     // MARK: Public
