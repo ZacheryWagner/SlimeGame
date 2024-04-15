@@ -12,6 +12,11 @@
 		A1075A1C2BC9379400824252 /* Nunito-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A7B2BC9353400ACEF58 /* Nunito-ExtraBold.ttf */; };
 		A1075A1D2BC9379400824252 /* Quicksand-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A792BC9351800ACEF58 /* Quicksand-Bold.ttf */; };
 		A1075A1E2BC9379400824252 /* Nunito-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */; };
+		A1075A202BCCD5ED00824252 /* ScoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1075A1F2BCCD5ED00824252 /* ScoreManager.swift */; };
+		A1075A222BCCDD4E00824252 /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1075A212BCCDD4E00824252 /* TimeManager.swift */; };
+		A1075A242BCCDD8200824252 /* ScoreTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1075A232BCCDD8200824252 /* ScoreTracking.swift */; };
+		A1075A262BCCDDDF00824252 /* ScoreConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1075A252BCCDDDF00824252 /* ScoreConstants.swift */; };
+		A1075A282BCCE3CD00824252 /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1075A272BCCE3CD00824252 /* PlayViewModel.swift */; };
 		A114E0582BBB6F2C00DEA716 /* Silme.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E0572BBB6F2C00DEA716 /* Silme.swift */; };
 		A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */; };
 		A114E05D2BBB9EE800DEA716 /* GameManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A114E05C2BBB9EE800DEA716 /* GameManager.swift */; };
@@ -42,6 +47,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A1075A1F2BCCD5ED00824252 /* ScoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreManager.swift; sourceTree = "<group>"; };
+		A1075A212BCCDD4E00824252 /* TimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
+		A1075A232BCCDD8200824252 /* ScoreTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreTracking.swift; sourceTree = "<group>"; };
+		A1075A252BCCDDDF00824252 /* ScoreConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreConstants.swift; sourceTree = "<group>"; };
+		A1075A272BCCE3CD00824252 /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
 		A114E0572BBB6F2C00DEA716 /* Silme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Silme.swift; sourceTree = "<group>"; };
 		A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionalMovement.swift; sourceTree = "<group>"; };
 		A114E05C2BBB9EE800DEA716 /* GameManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManager.swift; sourceTree = "<group>"; };
@@ -94,6 +104,7 @@
 			children = (
 				A114E05A2BBB70C100DEA716 /* DirectionalMovement.swift */,
 				A18DBAA52BBCCFDD00AE2C94 /* BoardVisualizing.swift */,
+				A1075A232BCCDD8200824252 /* ScoreTracking.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -115,6 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				A114E0602BBBA58100DEA716 /* Logger.swift */,
+				A1075A212BCCDD4E00824252 /* TimeManager.swift */,
+				A1075A1F2BCCD5ED00824252 /* ScoreManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -193,9 +206,11 @@
 		A18DBAAA2BBF537500AE2C94 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				A1075A252BCCDDDF00824252 /* ScoreConstants.swift */,
 				A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */,
 				A134E8C42BB283C20027EB09 /* BarrelGameApp.swift */,
 				A134E8C62BB283C20027EB09 /* ContentView.swift */,
+				A1075A272BCCE3CD00824252 /* PlayViewModel.swift */,
 				A134E8C82BB283C30027EB09 /* Assets.xcassets */,
 				A134E8CA2BB283C30027EB09 /* Preview Content */,
 			);
@@ -301,6 +316,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A14C5EF22BB916A5007C39F4 /* SKSpriteNode.swift in Sources */,
+				A1075A242BCCDD8200824252 /* ScoreTracking.swift in Sources */,
 				A114E0612BBBA58100DEA716 /* Logger.swift in Sources */,
 				A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */,
 				A114E05D2BBB9EE800DEA716 /* GameManager.swift in Sources */,
@@ -310,9 +326,13 @@
 				A18DBAAC2BBF53B200AE2C94 /* LayerPositions.swift in Sources */,
 				A18DBAAF2BBF575700AE2C94 /* SKButton.swift in Sources */,
 				A14C5EED2BB8D368007C39F4 /* BoardError.swift in Sources */,
+				A1075A202BCCD5ED00824252 /* ScoreManager.swift in Sources */,
+				A1075A282BCCE3CD00824252 /* PlayViewModel.swift in Sources */,
+				A1075A262BCCDDDF00824252 /* ScoreConstants.swift in Sources */,
 				A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */,
 				A114E0582BBB6F2C00DEA716 /* Silme.swift in Sources */,
 				A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */,
+				A1075A222BCCDD4E00824252 /* TimeManager.swift in Sources */,
 				A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */,
 				A134E8C72BB283C20027EB09 /* ContentView.swift in Sources */,
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
