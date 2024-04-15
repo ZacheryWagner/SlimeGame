@@ -29,8 +29,8 @@ enum GameEvent {
     /// The slimes have finished moving to their new place
     case slimesFinishedMovement
 
-    /// A line has been succesfully completed durring the game loop
-    case lineCompleted(LineCompletionInfo)
+    /// Line(s) have been succesfully completed durring the game loop
+    case linesCompleted([LineCompletionInfo])
 
     /// The slimes finished their removal animation and are no longer in the scene
     case slimesFinishedDespawning(LineCompletionInfo)
@@ -49,8 +49,11 @@ extension GameEvent {
             return "swipe \(direction) at: \(index)"
         case .slimesFinishedMovement:
             return "slimesFinishedMovement"
-        case .lineCompleted(let completion):
-            return "lineCompleted at \(completion.lineType) \(completion.index)"
+        case .linesCompleted(let completions):
+            guard let first = completions.first else {
+                return "linesCompleted event sent with no lines completed"
+            }
+            return "linesCompleted \(completions.count) lines"
         case .slimesFinishedDespawning(let completion):
             return "slimesFinishedDespawning at \(completion.lineType)  \(completion.index)"
         case .newSlimesPrepared(let slimes):

@@ -97,10 +97,8 @@ class Board {
     public func checkAndHandleLineCompletion() {
         logger.info("checkAndHandleLineCompletion")
         let completions = getLineCompletions()
-        for completion in completions {
-            events.send(.lineCompleted(completion))
-            updateCompletedLineToEmpty(for: completion)
-        }
+        guard completions.isEmpty == false else { return }
+        events.send(.linesCompleted(completions))
     }
     
     @discardableResult
