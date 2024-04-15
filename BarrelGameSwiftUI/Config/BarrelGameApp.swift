@@ -11,7 +11,8 @@ import SwiftUI
 struct BarrelGameApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            let vm = PlayViewModel(gameManager: GameManagerFactory.make())
+            PlayView(viewModel: vm)
         }
     }
 }

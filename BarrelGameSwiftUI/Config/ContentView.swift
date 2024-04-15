@@ -5,39 +5,44 @@
 //  Created by Zachery Wagner on 3/25/24.
 //
 
+import Combine
 import SwiftUI
 import SpriteKit
 
-struct ContentView: View {
+struct PlayView: View {
     
     // MARK: Properties
     
-    private let gameManager = GameManagerFactory.make()
     private let offset: CGFloat = -35
-
-    @State private var scale: CGFloat = 0.0
-    @State private var buttonsVisible: Bool = true
-
-    init() {}
     
+    private var cancellables = Set<AnyCancellable>()
+
+    @ObservedObject public var viewModel: PlayViewModel
+
     // MARK: Views
+    
+    init(viewModel: PlayViewModel) {
+        self.viewModel = viewModel
+    }
 
     var body: some View {
         ZStack {
             gameView()
-            if buttonsVisible {
+            if viewModel.isButtonsHidden {
                 mainUI()
             }
         }
         .onAppear {
-            setupGame()
+            viewModel.configureGameScreen(size: UIScreen.main.bounds.size)
             animateButtons()
         }
     }
 
     private func gameView() -> some View {
         GeometryReader { geometry in
-            gameManager.getSpriteView()
+            let scene = viewModel.getGameScene()
+            SpriteView(scene: scene)
+                .ignoresSafeArea()
                 .frame(width: geometry.size.width, height: geometry.size.height)
         }
     }
@@ -53,54 +58,50 @@ struct ContentView: View {
         return VStack(spacing: 30) {
             Button("Play") {
                 animateButtonsOut()
-                gameManager.playButtonTapped()
+                viewModel.playButtonTapped()
             }
             .buttonStyle(buttonStyle)
             .frame(width: buttonWidth, height: buttonHeight)
-            .scaleEffect(scale)
+            .scaleEffect(viewModel.scale)
             
             Button("Zen Mode") {}
                 .buttonStyle(buttonStyle)
                 .frame(width: buttonWidth, height: buttonHeight)
-                .scaleEffect(scale)
+                .scaleEffect(viewModel.scale)
             
             Button("Shop") {}
                 .buttonStyle(buttonStyle)
                 .frame(width: buttonWidth, height: buttonHeight)
-                .scaleEffect(scale)
+                .scaleEffect(viewModel.scale)
         }
         .offset(y: offset)
     }
-    
-    // MARK: Helpers
 
-    private func setupGame() {
-        let screenSize = UIScreen.main.bounds.size
-        gameManager.configureSceneSize(size: screenSize)
-    }
+    // MARK: Animations
 
     private func animateButtons() {
         withAnimation(.easeIn(duration: 0.25)) {
-            scale = 1.2
+            viewModel.scale = 1.2
         }
         withAnimation(Animation.spring(response: 0.4, dampingFraction: 0.5).delay(0.2)) {
-            scale = 1.0
+            viewModel.scale = 1.0
         }
     }
     
     private func animateButtonsOut() {
         withAnimation(.easeOut(duration: 0.3)) {
-            scale = 0.0
+            viewModel.scale = 0.0
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            buttonsVisible = false
+            viewModel.isButtonsHidden = false
         }
     }
 }
 
 // MARK: Preview
-struct ContentView_Previews: PreviewProvider {
+struct PlayView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        let vm = PlayViewModel(gameManager: GameManagerFactory.make())
+        PlayView(viewModel: vm)
     }
 }
