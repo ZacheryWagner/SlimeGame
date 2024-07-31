@@ -11,9 +11,10 @@ import Combine
 
 class SlimeGameScene: SKScene {
     private let logger = Logger(source: SlimeGameScene.self)
-    
+
     /// Informs the `GameManager` of  `GameEvent`s
-    public var events = PassthroughSubject<GameEvent, Never>()
+    public var gameEvents = PassthroughSubject<GameEvent, Never>()
+    public var setupEvents = PassthroughSubject<SetupEvent, Never>()
     
     private var bgGrass = SKSpriteNode(imageNamed: "ruins_bg_grass")
     private var bgWater = SKSpriteNode(imageNamed: "ruins_bg_water")
@@ -44,41 +45,30 @@ class SlimeGameScene: SKScene {
     
     // MARK: Public
 
-    public func inject(slimeMatrix: [[Slime?]]) {
-        logger.info("inject slimeMatrix")
-        var delayIncrement = 0.0
-        
-        for row in slimeMatrix.indices {
-            for column in slimeMatrix[row].indices {
-                if let slime = slimeMatrix[row][column] {
-                    animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
-                }
-            }
-        }
+    public func injectPreGame(slimeMatrix: [[Slime?]]) {
+        logger.info("injectPreGame")
+        inject(slimes: slimeMatrix.flatMap { $0 } )
+        setupEvents.send(.slimeSpawnFinished)
     }
     
-    public func inject(slimes: [Slime]) {
-        logger.info("inject slimes")
-        var delayIncrement = 0.0
-        
-        for slime in slimes {
-            animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
-        }
+    public func injectDuringGame(slimes: [Slime?]) {
+        logger.info("injectDuringGame")
+        inject(slimes: slimes)
+        gameEvents.send(.slimeSpawnFinished)
     }
     
-    // MARK: Setup
-    
-    private func setupWorld() {
+    public func setupWorld() {
         setupBackground()
         setupForeground()
         setupGamebox()
-//        setupDebugUI()
         
-        events.send(.playableAreaSetupComplete(
+        setupEvents.send(.playableAreaSetupComplete(
             playableArea.frame,
             CGPoint(x: frame.midX, y: frame.midY + Constants.playableAreaVerticalOffset))
         )
     }
+
+    // MARK: Setup
     
     private func setupBackground() {
         bgGrass.position = frame.center
@@ -197,16 +187,16 @@ class SlimeGameScene: SKScene {
         if abs(deltaX) > abs(deltaY) {
             // Horizontal Swipe
             if deltaX > 0 {
-                events.send(.swipe(.right, startRow))
+                gameEvents.send(.move(.right, startRow))
             } else {
-                events.send(.swipe(.left, startRow))
+                gameEvents.send(.move(.left, startRow))
             }
         } else {
             // Vertical Swipe
             if deltaY > 0 {
-                events.send(.swipe(.up, startColumn)) // deltaY > 0 indicates a swipe downwards on the screen
+                gameEvents.send(.move(.up, startColumn)) // deltaY > 0 indicates a swipe downwards on the screen
             } else {
-                events.send(.swipe(.down, startColumn)) // deltaY < 0 indicates a swipe upwards
+                gameEvents.send(.move(.down, startColumn)) // deltaY < 0 indicates a swipe upwards
             }
         }
 
@@ -214,5 +204,17 @@ class SlimeGameScene: SKScene {
         touchStartPoint = nil
         touchStartRow = nil
         touchStartColumn = nil
+    }
+    
+    // MARK: Helper
+    
+    private func inject(slimes: [Slime?]) {
+        logger.info("inject slimes")
+        var delayIncrement = 0.0
+        
+        for slime in slimes {
+            guard let slime = slime else { continue }
+            animateAddSlime(slime: slime, delayIncrement: &delayIncrement)
+        }
     }
 }

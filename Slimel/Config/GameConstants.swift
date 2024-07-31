@@ -32,5 +32,5 @@ struct Constants {
     static let playableAreaSize = CGSize(width: 310, height: 404)
     static let playableAreaVerticalOffset: CGFloat = 20
     
-    static let startTime: TimeInterval = 60
+    static let startTime: TimeInterval = 10
 }

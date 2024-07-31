@@ -12,8 +12,8 @@ import Combine
 /// Communicates with the `GameManager` via `events`
 protocol BoardVisualizing {
     /// Informs the `GameManager` of  `GameEvent`s
-    var events: PassthroughSubject<GameEvent, Never> { get set }
-    
+    var gameEvents: PassthroughSubject<GameEvent, Never> { get set }
+    var setupEvents: PassthroughSubject<SetupEvent, Never> { get set }
     
     /// Setup board positions and prepare for create
     /// - Parameter center: Used to configure positions

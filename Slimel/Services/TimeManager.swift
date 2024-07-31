@@ -17,32 +17,50 @@ class TimeManager {
             timeSubject.send(timeLeft)
         }
     }
+    private var initialTime: TimeInterval = Constants.startTime
     private var timer: Timer?
-    private let timeBonusPerLine = 5.0 // seconds
+    private let timeBonusPerLine = 5.0
     private(set) var timeSubject = CurrentValueSubject<TimeInterval, Never>(0)
 
     init(initialTime: TimeInterval = Constants.startTime) {
+        self.initialTime = initialTime
         self.timeLeft = initialTime
-        timeSubject.send(timeLeft)
     }
+    
+    // MARK: Public
 
     func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
             guard let self = self else { return }
-            self.timeLeft -= 1
-            if self.timeLeft <= 0 {
-                self.stopTimer()
-            }
+            self.handleTimerUpdate()
         }
-    }
-
-    func stopTimer() {
-        timer?.invalidate()
-        timer = nil
     }
 
     func addTimeForLineCompletion() {
         logger.info("addTimeForLineCompletion")
         timeLeft += timeBonusPerLine
+    }
+    
+    func resetTimer() {
+        timeLeft = initialTime
+        timeSubject.send(timeLeft)
+    }
+    
+    // MARK: Private
+    
+    private func handleTimerUpdate() {
+        timeLeft -= 0.01
+        if timeLeft <= 0 {
+            handleTimerFinished()
+        } else {
+            timeSubject.send(self.timeLeft)
+        }
+    }
+    
+    private func handleTimerFinished() {
+        timeLeft = 0
+        timer?.invalidate()
+        timer = nil
+        timeSubject.send(completion: .finished)
     }
 }

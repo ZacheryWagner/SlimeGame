@@ -18,7 +18,8 @@ class BoardVisualizer: BoardVisualizing {
     private let logger = Logger(source: BoardVisualizer.self)
 
     /// Informs the `GameManager` of  `GameEvent`s
-    public var events = PassthroughSubject<GameEvent, Never>()
+    public var gameEvents = PassthroughSubject<GameEvent, Never>()
+    public var setupEvents = PassthroughSubject<SetupEvent, Never>()
 
     /// The slimes that are added to and moved around the scene
     private var slimeMatrix = [[Slime?]]()
@@ -40,9 +41,9 @@ class BoardVisualizer: BoardVisualizing {
     private var isPlayingGame: Bool = false
     private var animationTimer: Timer?
     private var currentDirection: Direction = .down
-        
+
     init() {}
-    
+
     // MARK: BoardVisualizing
     
     public func setup(for center: CGPoint) {
@@ -63,7 +64,7 @@ class BoardVisualizer: BoardVisualizing {
         gabbi.position = getPositionFor(row: 0, column: lastColumn)!
         noah.position = getPositionFor(row: 1, column: lastColumn)!
         
-        events.send(.newSlimesPrepared([gabbi, noah]))
+        gameEvents.send(.newSlimesPrepared([gabbi, noah]))
 
         startAnimatingMenuSlimes(column: lastColumn)
     }
@@ -96,7 +97,7 @@ class BoardVisualizer: BoardVisualizing {
 
         slimeMatrix = Array(repeating: Array(repeating: nil, count: Constants.columns), count: Constants.rows)
         setSlimes(for: board)
-        events.send(GameEvent.boardVisualizationComplete(slimeMatrix))
+        setupEvents.send(.boardVisualizationComplete(slimeMatrix))
     }
 
     
@@ -139,7 +140,7 @@ class BoardVisualizer: BoardVisualizing {
             with: newSlimes,
             for: lineRegenInfo.lineType,
             at: lineRegenInfo.index)
-        events.send(.newSlimesPrepared(newSlimes))
+        gameEvents.send(.newSlimesPrepared(newSlimes))
     }
     
     // MARK: Initial Generation
@@ -292,7 +293,7 @@ class BoardVisualizer: BoardVisualizing {
         animationsCompleted += 1
         if animationsCompleted == animationsCount && !animationCompletionEventSent {
             animationCompletionEventSent = true
-            events.send(.slimesFinishedMovement)
+            gameEvents.send(.movementFinished)
         }
     }
     
@@ -302,11 +303,11 @@ class BoardVisualizer: BoardVisualizing {
         switch completion.lineType {
         case .row:
             animateAndRemoveSlimesInRow(at: completion.index, completion: { [weak self] in
-                self?.events.send(.slimesFinishedDespawning(completion))
+                self?.gameEvents.send(.slimeDespawnFinished(completion))
             })
         case .column:
             animateAndRemoveSlimesInColumn(at: completion.index, completion: { [weak self] in
-                self?.events.send(.slimesFinishedDespawning(completion))
+                self?.gameEvents.send(.slimeDespawnFinished(completion))
             })
         }
     }

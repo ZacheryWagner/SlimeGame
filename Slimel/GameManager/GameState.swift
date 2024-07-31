@@ -10,54 +10,74 @@ import Foundation
 enum GameState {
     case uninitialized
     case loading
-    case ready
+    case loaded
+    case startSequnce
     case playing
     case paused
     case ended
 }
 
-enum GameEvent {
+enum SetupEvent {
     /// The scene has finished loading textures and setting up the world
     case playableAreaSetupComplete(CGRect, CGPoint)
 
     /// The board has generated the slimes an assigned their positions
     case boardVisualizationComplete([[Slime?]])
+    
+    /// When the initial slimes are loaded
+    case slimeSpawnFinished
+}
 
+
+enum GameEvent {
     /// There has been a completed swipe action on a given row or column
-    case swipe(Direction, Int)
+    case move(Direction, Int)
 
     /// The slimes have finished moving to their new place
-    case slimesFinishedMovement
+    case movementFinished
 
     /// Line(s) have been succesfully completed durring the game loop
     case linesCompleted([LineCompletionInfo])
 
     /// The slimes finished their removal animation and are no longer in the scene
-    case slimesFinishedDespawning(LineCompletionInfo)
+    case slimeDespawnFinished(LineCompletionInfo)
     
     case newSlimesPrepared([Slime])
+    
+    case slimeSpawnFinished
 }
 
-extension GameEvent {
+extension SetupEvent {
     var localizedDescription: String {
         switch self {
         case .playableAreaSetupComplete(_, _):
             return "playableAreaSetupComplete"
         case .boardVisualizationComplete(_):
             return "boardVisualizationComplete"
-        case .swipe(let direction, let index):
+        case .slimeSpawnFinished:
+            return "slimeSpawnFinished"
+        }
+    }
+}
+
+extension GameEvent {
+    var localizedDescription: String {
+        switch self {
+        case .move(let direction, let index):
             return "swipe \(direction) at: \(index)"
-        case .slimesFinishedMovement:
-            return "slimesFinishedMovement"
+        case .movementFinished:
+            return "movementFinished"
         case .linesCompleted(let completions):
-            guard let first = completions.first else {
+            guard completions.first != nil else {
                 return "linesCompleted event sent with no lines completed"
             }
             return "linesCompleted \(completions.count) lines"
-        case .slimesFinishedDespawning(let completion):
-            return "slimesFinishedDespawning at \(completion.lineType)  \(completion.index)"
+        case .slimeDespawnFinished(let completion):
+            return "slimeDespawnFinished at \(completion.lineType)  \(completion.index)"
         case .newSlimesPrepared(let slimes):
             return "newSlimesPrepared: \(slimes.count) slimes"
+        case .slimeSpawnFinished:
+            return "slimeSpawnFinished"
         }
     }
 }

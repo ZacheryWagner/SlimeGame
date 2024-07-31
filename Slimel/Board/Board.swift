@@ -14,7 +14,7 @@ import Combine
 class Board {
     private let logger = Logger(source: Board.self)
     
-    public var events = PassthroughSubject<GameEvent, Never>()
+    public var gameEvents = PassthroughSubject<GameEvent, Never>()
 
     private var matrix = [[Tile]]()
 
@@ -98,7 +98,10 @@ class Board {
         logger.info("checkAndHandleLineCompletion")
         let completions = getLineCompletions()
         guard completions.isEmpty == false else { return }
-        events.send(.linesCompleted(completions))
+        for completion in completions {
+            updateCompletedLineToEmpty(for: completion)
+        }
+        gameEvents.send(.linesCompleted(completions))
     }
     
     @discardableResult
@@ -337,7 +340,7 @@ class Board {
         switch lineType {
         case .row:
             for column in 0..<columnCount {
-                var tile = Tile(
+                let tile = Tile(
                     state: states[column],
                     position: (row: index, column: column))
                 matrix[index][column] = tile
@@ -361,7 +364,9 @@ class Board {
     private func createMatrix(rows: Int, columns: Int, startingState: Tile.State) -> [[Tile]] {
         logger.info("createMatrix(rows: \(rows), columns: \(columns), startingState: \(startingState.rawValue)")
         let matrix = Array(
-            repeating: Array(repeating: Tile(state: startingState, position: (row: 0, column: 0)), count: columns),
+            repeating: Array(
+                repeating: Tile(state: startingState, position: (row: 0, column: 0)),
+                count: columns),
             count: rows)
         return matrix
     }

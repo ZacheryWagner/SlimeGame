@@ -45,8 +45,7 @@ extension SlimeGameScene {
         button.action = { [weak self] in
             guard let self = self else { return }
             
-            events.send(
-                .playableAreaSetupComplete(
+            setupEvents.send(.playableAreaSetupComplete(
                     playableArea.frame,
                     CGPoint(x: frame.midX, y: frame.midY + 20)
                 )

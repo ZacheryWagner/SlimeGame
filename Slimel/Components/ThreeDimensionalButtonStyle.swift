@@ -31,7 +31,7 @@ struct ThreeDimensionalButtonStyle: ButtonStyle {
                 .offset(y: currentOffset)
 
             configuration.label
-                .font(.custom("Nunito-Black", size: fontSize))
+                .font(.custom(Fonts.Nunito.black.rawValue, size: fontSize))
                 .foregroundColor(.white)
                 .shadow(color: .gray.opacity(0.5), radius: 1, x: 1, y: 1)
                 .offset(y: currentOffset)

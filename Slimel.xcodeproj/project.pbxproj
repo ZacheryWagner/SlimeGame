@@ -30,6 +30,8 @@
 		A14C5EED2BB8D368007C39F4 /* BoardError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EEC2BB8D368007C39F4 /* BoardError.swift */; };
 		A14C5EEF2BB90729007C39F4 /* SlimeGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */; };
 		A14C5EF22BB916A5007C39F4 /* SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */; };
+		A174D7382BCE231100656BEC /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A174D7372BCE231100656BEC /* GameOverView.swift */; };
+		A174D73A2BD0884D00656BEC /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A174D7392BD0884D00656BEC /* Fonts.swift */; };
 		A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBA9D2BBCCE2E00AE2C94 /* GameState.swift */; };
 		A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */; };
 		A18DBAA22BBCCEB700AE2C94 /* GameManagerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A18DBAA12BBCCEB700AE2C94 /* GameManagerFactory.swift */; };
@@ -72,6 +74,8 @@
 		A14C5EEC2BB8D368007C39F4 /* BoardError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardError.swift; sourceTree = "<group>"; };
 		A14C5EEE2BB90729007C39F4 /* SlimeGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlimeGameScene.swift; sourceTree = "<group>"; };
 		A14C5EF12BB916A5007C39F4 /* SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKSpriteNode.swift; sourceTree = "<group>"; };
+		A174D7372BCE231100656BEC /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		A174D7392BD0884D00656BEC /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 		A18DBA9D2BBCCE2E00AE2C94 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		A18DBA9F2BBCCE6800AE2C94 /* GameConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConstants.swift; sourceTree = "<group>"; };
 		A18DBAA12BBCCEB700AE2C94 /* GameManagerFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameManagerFactory.swift; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				A18DBAAE2BBF575700AE2C94 /* SKButton.swift */,
 				A18DBABC2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift */,
 				A18DBABE2BC9200D00AE2C94 /* NeumorphicButtonStyle.swift */,
+				A174D7372BCE231100656BEC /* GameOverView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 				A1150A7A2BC9352900ACEF58 /* Nunito-Bold.ttf */,
 				A1150A7B2BC9353400ACEF58 /* Nunito-ExtraBold.ttf */,
 				A1150A7C2BC9353A00ACEF58 /* Nunito-Black.ttf */,
+				A174D7392BD0884D00656BEC /* Fonts.swift */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -339,6 +345,7 @@
 				A1075A262BCCDDDF00824252 /* ScoreConstants.swift in Sources */,
 				A18DBAB12BBF5EC800AE2C94 /* DebugUI.swift in Sources */,
 				A114E0582BBB6F2C00DEA716 /* Silme.swift in Sources */,
+				A174D73A2BD0884D00656BEC /* Fonts.swift in Sources */,
 				A114E05B2BBB70C100DEA716 /* DirectionalMovement.swift in Sources */,
 				A1075A222BCCDD4E00824252 /* TimeManager.swift in Sources */,
 				A18DBAA02BBCCE6800AE2C94 /* GameConstants.swift in Sources */,
@@ -346,6 +353,7 @@
 				A134E8D72BB29EA60027EB09 /* Board.swift in Sources */,
 				A18DBABB2BC7613600AE2C94 /* BoardVisualizerError.swift in Sources */,
 				A18DBA9E2BBCCE2E00AE2C94 /* GameState.swift in Sources */,
+				A174D7382BCE231100656BEC /* GameOverView.swift in Sources */,
 				A18DBAB52BC4E9AF00AE2C94 /* Array.swift in Sources */,
 				A18DBAA62BBCCFDD00AE2C94 /* BoardVisualizing.swift in Sources */,
 				A18DBABD2BC9193300AE2C94 /* ThreeDimensionalButtonStyle.swift in Sources */,
@@ -485,11 +493,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BarrelGameSwiftUI/Config/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Slimel/Config/Preview Content\"";
 				DEVELOPMENT_TEAM = DCLHR77W8M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BarrelGameSwiftUI/Info.plist;
+				INFOPLIST_FILE = Slimel/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -501,7 +509,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = zacheryowagner.BarrelGameSwiftUI;
+				PRODUCT_BUNDLE_IDENTIFIER = zacheryowagner.Slimel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -516,11 +524,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"BarrelGameSwiftUI/Config/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Slimel/Config/Preview Content\"";
 				DEVELOPMENT_TEAM = DCLHR77W8M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = BarrelGameSwiftUI/Info.plist;
+				INFOPLIST_FILE = Slimel/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -532,7 +540,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = zacheryowagner.BarrelGameSwiftUI;
+				PRODUCT_BUNDLE_IDENTIFIER = zacheryowagner.Slimel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

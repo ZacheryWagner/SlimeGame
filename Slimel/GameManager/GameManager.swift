@@ -17,7 +17,7 @@ class GameManager {
     
     // MARK: Combine
     
-    private var state = CurrentValueSubject<GameState, Never>(.uninitialized)
+    public var state = CurrentValueSubject<GameState, Never>(.uninitialized)
     
     var scorePublisher: AnyPublisher<Int, Never> {
         scoreManager.scoreSubject.eraseToAnyPublisher()
@@ -48,37 +48,47 @@ class GameManager {
         
         self.scene.scaleMode = .aspectFill
 
-        state.send(.loading)
-    
-        setupEvents()
+        subscribeToSetupEvents()
+        subscribeToGameEvents()
         setupStateSubscription()
         subscribeToTimeManager()
+        transition(to: .loading)
     }
+    
+    // MARK: Setup Subscriptions
 
-    private func setupEvents() {
-        scene.events
-            .merge(with: boardVisualizer.events)
-            .merge(with: board.events)
+    private func subscribeToSetupEvents() {
+        scene.setupEvents
+            .merge(with: boardVisualizer.setupEvents)
+            .sink { [weak self] event in
+                self?.handleSetupEvent(event)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func subscribeToGameEvents() {
+        scene.gameEvents
+            .merge(with: board.gameEvents)
+            .merge(with: boardVisualizer.gameEvents)
             .sink { [weak self] event in
                 self?.handleGameEvent(event)
             }
             .store(in: &cancellables)
     }
     
-    
     // Subscribing to the timeManager's time updates
     private func subscribeToTimeManager() {
         timeManager.timeSubject
             .sink { [weak self] timeLeft in
                 if timeLeft <= 0 {
-                    self?.end()
+                    self?.transition(to: .ended)
                 }
             }
             .store(in: &cancellables)
     }
-    
-    // MARK: State Machine
-    
+
+    // MARK: State Machines
+
     private func setupStateSubscription() {
         state
             .removeDuplicates()
@@ -86,8 +96,9 @@ class GameManager {
                 self?.logger.info("State Update: \(newState)")
                 switch newState {
                 case .uninitialized: return
-                case .loading: return
-                case .ready: return
+                case .loading: self?.load()
+                case .loaded: return
+                case .startSequnce: self?.startSequence()
                 case .playing: return
                 case .paused: return
                 case .ended: return
@@ -96,64 +107,83 @@ class GameManager {
             .store(in: &cancellables)
     }
 
-    private func handleGameEvent(_ event: GameEvent) {
-        logger.info("handleGameEvent: \(event.localizedDescription)")
+    private func transition(to newState: GameState) {
+        guard state.value != newState else { return }
+        state.send(newState)
+    }
+    
+    // MARK: Event Handling
+    
+    private func handleSetupEvent(_ event: SetupEvent) {
+        logger.info("handleSetupEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
             boardVisualizer.setup(for: center)
-//            boardVisualizer.startMenuSequence()
+            transition(to: .loaded)
         case .boardVisualizationComplete(let slimes):
-            scene.inject(slimeMatrix: slimes)
-            state.send(.ready)
-        case .swipe(let direction, let index):
+            scene.injectPreGame(slimeMatrix: slimes)
+        case .slimeSpawnFinished:
+            start()
+        }
+    }
+
+    private func handleGameEvent(_ event: GameEvent) {
+        logger.info("handleGameEvent: \(event.localizedDescription)")
+        switch event {
+        case .move(let direction, let index):
             board.move(direction: direction, index: index)
             boardVisualizer.animateSlimesForSwipe(
                 direction: direction,
                 index: index)
-        case .slimesFinishedMovement:
+        case .movementFinished:
             board.checkAndHandleLineCompletion()
         case .linesCompleted(let completions):
             boardVisualizer.handleLineCompletions(completions)
             scoreManager.addScoreForLineCompletion(comboLevel: 0, lineClears: completions.count)
             timeManager.addTimeForLineCompletion()
-        case .slimesFinishedDespawning(let completion):
+        case .slimeDespawnFinished(let completion):
+            // This affects the matrix within the board itself
             let lineRegenInfo = board.generateNewLine(for: completion)
             boardVisualizer.generateNewSlimes(from: lineRegenInfo)
         case .newSlimesPrepared(let slimes):
-            scene.inject(slimes: slimes)
+            scene.injectDuringGame(slimes: slimes)
+        case .slimeSpawnFinished:
+            board.checkAndHandleLineCompletion()
         }
-    }
-    
-    private func transition(to newState: GameState) {
-        guard state.value != newState else { return }
-        state.send(newState)
     }
 
     // MARK: Game
     
-    private func initializeGame() {
-        logger.info("initializeGame")
+    /// Once the world is loaded `playableAreaSetupComplete` is fired.
+    private func load() {
         board.generateGameReadyBoard()
+//        scene.setupWorld()
+    }
+
+    
+    /// Reset the timer and create the slimes.  
+    /// When the slimes are finished being created they will call `boardVisualizationComplete` will be called.
+    /// When they are finished spawning `slimesFinishedSpawning` will be hit
+    private func startSequence() {
+        timeManager.resetTimer()
         boardVisualizer.createSlimes(for: board)
-        start()
     }
-    
+
     private func start() {
-        guard state.value == .ready else { return }
         timeManager.startTimer()
+        // Handle Go animation
     }
     
-    
-    // Handling the end of the game
-    func end() {
-        logger.info("end")
-        state.send(.ended)
+    private func end() {
+        
     }
     
     // MARK: Public
     
     public func playButtonTapped() {
-        initializeGame()
+    }
+    
+    public func playAgainTapped() {
     }
     
     public func getScene() -> SlimeGameScene {
