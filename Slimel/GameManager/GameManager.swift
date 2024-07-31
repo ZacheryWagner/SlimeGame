@@ -96,7 +96,7 @@ class GameManager {
                 self?.logger.info("State Update: \(newState)")
                 switch newState {
                 case .uninitialized: return
-                case .loading: self?.load()
+                case .loading: return
                 case .loaded: return
                 case .startSequnce: self?.startSequence()
                 case .playing: return
@@ -118,6 +118,7 @@ class GameManager {
         logger.info("handleSetupEvent: \(event.localizedDescription)")
         switch event {
         case .playableAreaSetupComplete(_, let center):
+            board.generateGameReadyBoard()
             boardVisualizer.setup(for: center)
             transition(to: .loaded)
         case .boardVisualizationComplete(let slimes):
@@ -153,12 +154,6 @@ class GameManager {
     }
 
     // MARK: Game
-    
-    /// Once the world is loaded `playableAreaSetupComplete` is fired.
-    private func load() {
-        board.generateGameReadyBoard()
-//        scene.setupWorld()
-    }
 
     
     /// Reset the timer and create the slimes.  
@@ -170,8 +165,8 @@ class GameManager {
     }
 
     private func start() {
-        timeManager.startTimer()
         // Handle Go animation
+        timeManager.startTimer()
     }
     
     private func end() {
@@ -181,6 +176,7 @@ class GameManager {
     // MARK: Public
     
     public func playButtonTapped() {
+        startSequence()
     }
     
     public func playAgainTapped() {
