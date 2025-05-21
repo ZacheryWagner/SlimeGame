@@ -1,9 +1,11 @@
 # Slimel
- Retro puzzle game about moving slimes
+ Retro puzzle game about moving slimes writen entirely in Swift
 
 ![image](https://github.com/ZacheryWagner/SlimeGame/assets/25253120/0b530155-1d6b-416c-ad77-b9a904c41dc7)
 
 # Development Timeline
+
+This repo is abandoned.  "SlimeGame" (now Slimel) has been rebuilt in Godot where I am continually developing.
 
 ## Pre-Release
 
